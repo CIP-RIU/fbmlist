@@ -28,7 +28,16 @@ server_managerlist <- function(input,output,session, values){
   mtl_files_react <- eventReactive(input$fbmlist_refresh,{   
     
     #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".dbf|.rds")
-    dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
+    
+    
+    #before fbglobal
+    #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
+    
+    #after fbglobal
+    path <- fbglobal::get_base_dir()
+    dbf_file_list <- list.files(path, full.names = TRUE, pattern = ".rds")
+    
+    
     lg_dbf <- length(dbf_file_list)
     
     if(lg_dbf == 0){ gmtfiles <- "" }
@@ -121,6 +130,8 @@ server_managerlist <- function(input,output,session, values){
       print(mtl_files_react())
       print(selected_file())
       print(download_data())
+      print(fbglobal::get_base_dir())
+      
       
       tbl_list_data <- download_data()
       

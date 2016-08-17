@@ -15,7 +15,13 @@
     dspotatotrials_dpassport <- fetch(res, n = -1)
     names(dspotatotrials_dpassport) <- c("Accession_Number","Accession_Name","Accession_Code","Female_AcceNumb","Male_AcceNumb","Population")
     #write.dbf(dspotatotrials_dpassport,"dspotatotrials_dpassport.dbf")
-    saveRDS(dspotatotrials_dpassport,file = "dspotatotrials_dpassport.rds")
+    
+    
+    
+    path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "/dspotatotrials_dpassport.rds", sep = "")
+    saveRDS(dspotatotrials_dpassport, file = path_file)
+    #saveRDS(dspotatotrials_dpassport,file = "dspotatotrials_dpassport.rds")
     dbDisconnect(con)
  
     
@@ -25,7 +31,11 @@
     dssweettrials_dpassport <- fetch(res, n = -1)
     names(dssweettrials_dpassport) <- c("Accession_Number","Accession_Name","Accession_Code","Female_AcceNumb","Male_AcceNumb","Population")
     #write.dbf(dssweettrials_dpassport,"dssweettrials_dpassport.dbf")
-    saveRDS(dssweettrials_dpassport,file = "dssweettrials_dpassport.rds")
+    path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "/dssweettrials_dpassport.rds", sep = "")
+    
+    saveRDS(dssweettrials_dpassport,file =  path_file)
+    #saveRDS(dssweettrials_dpassport,file = "dssweettrials_dpassport.rds")
     dbDisconnect(con)
     
     
@@ -35,7 +45,14 @@
     potato_pedigree <- fetch(res, n = -1)
     names(potato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
     #write.dbf(potato_pedigree,"potato_pedigree.dbf")
-    saveRDS(potato_pedigree,file = "potato_pedigree.rds")
+    
+    path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "potato_pedigree.rds", sep = "")
+
+    #saveRDS(potato_pedigree,file = "potato_pedigree.rds")
+    saveRDS(potato_pedigree, file =  path_file)
+    
+    
     dbDisconnect(con)
     
 #     m <- dbDriver("MySQL");
@@ -51,7 +68,13 @@
     sweetpotato_pedigree <- fetch(res, n = -1)
     names(sweetpotato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
     #write.dbf(sweetpotato_pedigree,"sweetpotato_pedigree.dbf")
-    saveRDS(sweetpotato_pedigree,file = "sweetpotato_pedigree.rds")
+    
+    path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "sweetpotato_pedigree.rds", sep = "")
+    saveRDS(sweetpotato_pedigree,file = path_file)
+    
+    
+    #saveRDS(sweetpotato_pedigree,file = "sweetpotato_pedigree.rds")
     dbDisconnect(con)
     #foreign::write.dbf(mtl_data, "mlist_biomart.dbf") 
     
@@ -70,9 +93,19 @@
     print("RUTA DEL FBMLIST-FIN")
     
     
-      #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".dbf|.rds")
-      dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
+        
+     ##sin rsimon
+      #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
+    
+     ##con fbglbal
+      path <- fbglobal::get_base_dir()
+      dbf_file_list <- list.files(path, full.names = TRUE, pattern = ".rds")
+      #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
+      
       lg_dbf <- length(dbf_file_list)
+      
+      
+      
       
       if(lg_dbf == 0){ gmtfiles <- "" }
       if(lg_dbf>0)   { 
@@ -90,7 +123,7 @@
 }
 
 #' Cipnumber Creation
-#  @describeIn According to every cipnumber and repetition, it creates new cipnumber
+#' @describeIn According to every cipnumber and repetition, it creates new cipnumber
 #
   cipnumber_creation <- function(header, nrep){
      
@@ -117,7 +150,7 @@
 #    }
   
 #' Accession Name Creation
-## describeIn Creation of accession names according to the number of repetitions
+#' @describeIn Creation of accession names according to the number of repetitions
 #'
        
 accessname_code <- function(accession_name, nrep){

@@ -18,7 +18,7 @@ library(dplyr)
 library(data.table)
 library(countrycode) ##agregar al hidap2 app
 library(openxlsx)
-
+library(fbglobal)
 ##test (crear listas usando pedregree book)
 ##test (crear listas usando passport book)
 #test combinar listas pedgree book (n>1)
