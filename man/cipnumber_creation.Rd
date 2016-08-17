@@ -9,8 +9,4 @@ cipnumber_creation(header, nrep)
 \description{
 Cipnumber Creation
 }
-\section{Functions}{
-\itemize{
-\item \code{cipnumber_creation}: to every cipnumber and repetition, it creates new cipnumber
-}}
 

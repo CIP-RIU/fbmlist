@@ -9,8 +9,4 @@ accessname_code(accession_name, nrep)
 \description{
 Accession Name Creation
 }
-\section{Functions}{
-\itemize{
-\item \code{accessname_code}: of accession names according to the number of repetitions
-}}
 

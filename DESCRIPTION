@@ -8,7 +8,16 @@ Depends:
     DBI,
     RMySQL,
     spsurvey,
-    foreign
+    foreign,
+    DT,
+    data.table,
+    dplyr,
+    openxlsx,
+    shiny,
+    shinydashboard,
+    shinyjs,
+    shinysky,
+    stringr
 License: MIT + file LICENSE
 BugReports: https://github.com/omarbenites/fbmlist/issues
 Encoding: UTF-8

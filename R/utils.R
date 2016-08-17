@@ -90,8 +90,8 @@
 }
 
 #' Cipnumber Creation
-#' @describeIn According to every cipnumber and repetition, it creates new cipnumber
-#'
+#  @describeIn According to every cipnumber and repetition, it creates new cipnumber
+#
   cipnumber_creation <- function(header, nrep){
      
      #cipnumber structure: cipnumber_new = cipnumber_family.cipnumber_tail
@@ -117,7 +117,7 @@
 #    }
   
 #' Accession Name Creation
-#' @describeIn Creation of accession names according to the number of repetitions
+## describeIn Creation of accession names according to the number of repetitions
 #'
        
 accessname_code <- function(accession_name, nrep){
