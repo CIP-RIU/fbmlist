@@ -15,10 +15,9 @@
     dspotatotrials_dpassport <- fetch(res, n = -1)
     names(dspotatotrials_dpassport) <- c("Accession_Number","Accession_Name","Accession_Code","Female_AcceNumb","Male_AcceNumb","Population")
     #write.dbf(dspotatotrials_dpassport,"dspotatotrials_dpassport.dbf")
-    
-    
-    
+ 
     path <- fbglobal::get_base_dir()
+    print("path")
     path_file <- paste(path, "/dspotatotrials_dpassport.rds", sep = "")
     saveRDS(dspotatotrials_dpassport, file = path_file)
     #saveRDS(dspotatotrials_dpassport,file = "dspotatotrials_dpassport.rds")
@@ -47,7 +46,7 @@
     #write.dbf(potato_pedigree,"potato_pedigree.dbf")
     
     path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "potato_pedigree.rds", sep = "")
+    path_file <- paste(path, "/potato_pedigree.rds", sep = "")
 
     #saveRDS(potato_pedigree,file = "potato_pedigree.rds")
     saveRDS(potato_pedigree, file =  path_file)
@@ -70,7 +69,7 @@
     #write.dbf(sweetpotato_pedigree,"sweetpotato_pedigree.dbf")
     
     path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "sweetpotato_pedigree.rds", sep = "")
+    path_file <- paste(path, "/sweetpotato_pedigree.rds", sep = "")
     saveRDS(sweetpotato_pedigree,file = path_file)
     
     
