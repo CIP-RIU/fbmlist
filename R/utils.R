@@ -16,9 +16,10 @@
     names(dspotatotrials_dpassport) <- c("Accession_Number","Accession_Name","Accession_Code","Female_AcceNumb","Male_AcceNumb","Population")
     #write.dbf(dspotatotrials_dpassport,"dspotatotrials_dpassport.dbf")
  
-    path <- fbglobal::get_base_dir()
+    #path <- fbglobal::get_base_dir()
+    path <- Sys.getenv("LOCALAPPDATA")
     print("path")
-    path_file <- paste(path, "/dspotatotrials_dpassport.rds", sep = "")
+    path_file <- paste(path, "\\dspotatotrials_dpassport.rds", sep = "")
     saveRDS(dspotatotrials_dpassport, file = path_file)
     #saveRDS(dspotatotrials_dpassport,file = "dspotatotrials_dpassport.rds")
     dbDisconnect(con)
@@ -30,8 +31,8 @@
     dssweettrials_dpassport <- fetch(res, n = -1)
     names(dssweettrials_dpassport) <- c("Accession_Number","Accession_Name","Accession_Code","Female_AcceNumb","Male_AcceNumb","Population")
     #write.dbf(dssweettrials_dpassport,"dssweettrials_dpassport.dbf")
-    path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "/dssweettrials_dpassport.rds", sep = "")
+    #path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "\\dssweettrials_dpassport.rds", sep = "")
     
     saveRDS(dssweettrials_dpassport,file =  path_file)
     #saveRDS(dssweettrials_dpassport,file = "dssweettrials_dpassport.rds")
@@ -45,9 +46,9 @@
     names(potato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
     #write.dbf(potato_pedigree,"potato_pedigree.dbf")
     
-    path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "/potato_pedigree.rds", sep = "")
-
+    #path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "\\potato_pedigree.rds", sep = "")
+    
     #saveRDS(potato_pedigree,file = "potato_pedigree.rds")
     saveRDS(potato_pedigree, file =  path_file)
     
@@ -68,8 +69,8 @@
     names(sweetpotato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
     #write.dbf(sweetpotato_pedigree,"sweetpotato_pedigree.dbf")
     
-    path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "/sweetpotato_pedigree.rds", sep = "")
+    #path <- fbglobal::get_base_dir()
+    path_file <- paste(path, "\\sweetpotato_pedigree.rds", sep = "")
     saveRDS(sweetpotato_pedigree,file = path_file)
     
     
@@ -97,7 +98,8 @@
       #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
     
      ##con fbglbal
-      path <- fbglobal::get_base_dir()
+      #path <- fbglobal::get_base_dir()
+      path <- Sys.getenv("LOCALAPPDATA")
       dbf_file_list <- list.files(path, full.names = TRUE, pattern = ".rds")
       #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
       

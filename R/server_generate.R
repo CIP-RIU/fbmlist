@@ -23,13 +23,25 @@ server_generate <- function(input,output,session, values){
     #dbf_sel <- input$fbmlist_sel_type
     #if(is.null(dbf_file) && is.null(dbf_sel)){ return(NULL) }
     if(n==1){
-        germlist_db <- readRDS(dbf_file)
+        
+        
+        path <- Sys.getenv("LOCALAPPDATA")
+        path <- paste(path,dbf_file,sep = "\\")
+        print(path)
+        #germlist_db <- readRDS(dbf_file)
+        germlist_db <- readRDS(path)
+        
+        
     }
     #germlist_db <- foreign::read.dbf(file = dbf_file, as.is = TRUE)
     if(n > 1){
       combine <- list() 
         for(i in 1:n){  
-          combine[[i]] <- readRDS(file = dbf_file[i]) 
+          
+          path <- Sys.getenv("LOCALAPPDATA")
+          path <- paste(path,dbf_file,sep = "\\")
+          combine[[i]] <- readRDS(path = dbf_file[i])
+          #combine[[i]] <- readRDS(file = dbf_file[i]) 
         } 
       join_books <- data.table::rbindlist(combine,fill = TRUE)
       join_books <- as.data.frame(join_books)
