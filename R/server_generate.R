@@ -25,9 +25,11 @@ server_generate <- function(input,output,session, values){
     if(n==1){
         
         
-        path <- Sys.getenv("LOCALAPPDATA")
+        #path <- Sys.getenv("LOCALAPPDATA")
+        path <- fbglobal::get_base_dir()
         path <- paste(path,dbf_file,sep = "\\")
-        print(path)
+       
+        #print(path)
         #germlist_db <- readRDS(dbf_file)
         germlist_db <- readRDS(path)
         
@@ -38,7 +40,7 @@ server_generate <- function(input,output,session, values){
       combine <- list() 
         for(i in 1:n){  
           
-          path <- Sys.getenv("LOCALAPPDATA")
+          path <- fbglobal::get_base_dir()
           path <- paste(path,dbf_file,sep = "\\")
           combine[[i]] <- readRDS(path = dbf_file[i])
           #combine[[i]] <- readRDS(file = dbf_file[i]) 
@@ -416,8 +418,12 @@ server_generate <- function(input,output,session, values){
       
       
       fbmlist_name_dbf <- paste(fbmlist_name_dbf,".rds",sep = "")
-      #saveRDS(chosen_gmtl_table, file = fbmlist_name_dbf)
-      saveRDS(gen_list_tbl, file = fbmlist_name_dbf)
+     
+      path <- fbglobal::get_base_dir()
+      path <- paste(path, gen_list_tbl, sep="\\")
+      saveRDS(gen_list_tbl, file = path)
+      
+      #saveRDS(gen_list_tbl, file = fbmlist_name_dbf)
       mtl_files()
       
       #shinyBS::createAlert(session, "alert_fbmlist_on", "fbdoneAlert", title = "Sucessfully Created!",
