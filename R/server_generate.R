@@ -419,11 +419,17 @@ server_generate <- function(input,output,session, values){
       
       fbmlist_name_dbf <- paste(fbmlist_name_dbf,".rds",sep = "")
      
-      path <- fbglobal::get_base_dir()
-      path <- paste(path, gen_list_tbl, sep="\\")
-      saveRDS(gen_list_tbl, file = path)
       
+      ## using fbglobal
+      path <- fbglobal::get_base_dir()
+      path <- paste(path,  fbmlist_name_dbf, sep="\\")
+      saveRDS(gen_list_tbl, file = path)
+      #end fbgbloal
+      
+      ###without fbglobal
       #saveRDS(gen_list_tbl, file = fbmlist_name_dbf)
+      ##
+      
       mtl_files()
       
       #shinyBS::createAlert(session, "alert_fbmlist_on", "fbdoneAlert", title = "Sucessfully Created!",
