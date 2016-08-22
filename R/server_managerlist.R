@@ -35,7 +35,8 @@ server_managerlist <- function(input,output,session, values){
     
     #after fbglobal
     #path <- fbglobal::get_base_dir()
-    path <- Sys.getenv("LOCALAPPDATA")
+    #path <- Sys.getenv("LOCALAPPDATA")
+    path <- fbglobal::get_base_dir()
     print(path)
     
     dbf_file_list <- list.files(path, full.names = TRUE, pattern = ".rds")
