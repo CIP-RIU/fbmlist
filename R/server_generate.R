@@ -423,6 +423,10 @@ server_generate <- function(input,output,session, values){
       ## using fbglobal
       path <- fbglobal::get_base_dir()
       path <- paste(path,  fbmlist_name_dbf, sep="\\")
+      
+      print("path mtlist")
+      print(path)
+      print("end path mtlist")
       saveRDS(gen_list_tbl, file = path)
       #end fbgbloal
       
