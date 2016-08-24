@@ -20,7 +20,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                           
                           fluidRow(
                             box(
-                              title = "Create New List", width = 12, status = "primary", height = "250px",
+                              title = " ", width = 12, status = "primary", height = "250px",
                               #p("Seleccione un cultivo y una base de datos"),
                               
                               fluidRow(

@@ -23,7 +23,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                           
                           fluidRow(
                             box(
-                              title = "Manage database", width = 12, status = "primary", height = "250px",
+                              title = " ", width = 12, status = "primary", height = "250px",
                               #p("Seleccione un cultivo y una base de datos"),
                               
                               fluidRow(
