@@ -13,7 +13,7 @@ managerlist_ui <- function(type = "tab", title = "Manage List", name = "manageLi
                           h2(title),   
                           
                           box(
-                            title = "Manager List", status = "primary", solidHeader = TRUE,
+                            title = " ", status = "primary", solidHeader = TRUE,
                             collapsible = TRUE, width = 12,
                             #tabsetPanel(
                             tabBox(width = 10,
