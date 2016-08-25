@@ -17,13 +17,23 @@ server_createlist <- function(input,output,session, values){
     n <- length(input$fbmlist_sel_list_new)
   
     if(n==1){
-      germlist_db <- readRDS(dbf_file)
+      #germlist_db <- readRDS(dbf_file)
+      path <- fbglobal::get_base_dir()
+      path <- paste(path,dbf_file,sep = "\\")
+      
+      #print(path)
+      #germlist_db <- readRDS(dbf_file)
+      germlist_db <- readRDS(path)
     }
 
     if(n > 1){
       combine <- list() 
       for(i in 1:n){  
-        combine[[i]] <- readRDS(file = dbf_file[i]) 
+        
+        path <- fbglobal::get_base_dir()
+        path <- paste(path,dbf_file,sep = "\\")
+        combine[[i]] <- readRDS(path = dbf_file[i])
+        #combine[[i]] <- readRDS(file = dbf_file[i]) 
       } 
       join_books <- data.table::rbindlist(combine,fill = TRUE)
       join_books <- as.data.frame(join_books)
@@ -496,7 +506,18 @@ server_createlist <- function(input,output,session, values){
       new_list_tbl <- new_list_tbl[,orden]
       
       #saveRDS(intermediate_mlist_db,file = fbmlist_name_dbf)
-      saveRDS(new_list_tbl, file = fbmlist_name_dbf)
+      
+      #using fbglobal
+      path <- fbglobal::get_base_dir()
+      path <- paste(path,  fbmlist_name_dbf, sep="\\")
+      saveRDS(gen_list_tbl, file = path)
+      
+      
+      
+      #without fbglobal
+      #saveRDS(new_list_tbl, file = fbmlist_name_dbf)
+      ##
+      
       mtl_files()
       
       #shinyBS::createAlert(session, "alert_fbmlist_new", "fbdoneAlert", title = "Sucessfully Created!",

@@ -15,10 +15,8 @@ server_generate <- function(input,output,session, values){
     #stype <- length(input$fbmlist_sel_type)
     #print(length(input$fbmlist_connect))
     dbf_file <- input$fbmlist_sel_list
-    
-    
-    
     n <- length(input$fbmlist_sel_list)
+    
     #print(dbf_file)
     #dbf_sel <- input$fbmlist_sel_type
     #if(is.null(dbf_file) && is.null(dbf_sel)){ return(NULL) }
@@ -424,9 +422,9 @@ server_generate <- function(input,output,session, values){
       path <- fbglobal::get_base_dir()
       path <- paste(path,  fbmlist_name_dbf, sep="\\")
       
-      print("path mtlist")
-      print(path)
-      print("end path mtlist")
+#       print("path mtlist")
+#       print(path)
+#       print("end path mtlist")
       saveRDS(gen_list_tbl, file = path)
       #end fbgbloal
       
