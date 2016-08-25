@@ -510,7 +510,7 @@ server_createlist <- function(input,output,session, values){
       #using fbglobal
       path <- fbglobal::get_base_dir()
       path <- paste(path,  fbmlist_name_dbf, sep="\\")
-      saveRDS(gen_list_tbl, file = path)
+      saveRDS(new_list_tbl, file = path)
       
       
       
