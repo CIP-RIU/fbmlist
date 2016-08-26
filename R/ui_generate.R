@@ -39,7 +39,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                                        
                                        ),
 
-                                column(6, selectizeInput("fbmlist_sel_type", "Type of DataBase", width="100%", selected = 2,
+                                column(6, selectizeInput("fbmlist_sel_type", "Select database", width="100%", selected = 2,
                                                          choices = c("Institutional","Local")))
                               ),
                               
@@ -47,7 +47,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                                 #column(6, selectizeInput("fbmlist_sel_list", "Select data base", width="100%",
                                 #                         choices = db_files_choices )),
                                 column(6, uiOutput("sel_list_on_btn")),
-                                column(6, actionButton("fbmlist_connect", "Connect DB", icon("fa fa-database"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4", width = 150))
+                                column(6, actionButton("fbmlist_connect", "Connect", icon("fa fa-database"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4", width = 150))
                               ),
                               
                               tags$style(type='text/css', "#fbmlist_sel_list { width:100%; margin-top: 25px;}"),
@@ -76,7 +76,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                             fluidRow(
                               box(
                                 #"Ingrese una lista de familias o clones", width = 4, status = "primary", height = "730px",
-                                title = "Ingrese una lista de familias o clones", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
+                                title = "Paste a list of clones", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
                                 br(),
                                 br(),
                                 tags$textarea(id="fbmlist_txtarea", rows=30, cols=31, ""),
@@ -115,7 +115,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                           fluidRow(
                             box(
                               #"Fill your Material List Information", width = 4, status = "primary", height = "600px",
-                              title = "Fill your Material List Information", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
+                              title = "Fill your material list information", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
                               br(),
                               br(),
                               uiOutput("create_on_name")

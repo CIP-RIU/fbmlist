@@ -109,7 +109,7 @@ server_generate <- function(input,output,session, values){
       }
    }
     
-    shiny::selectizeInput(inputId ="fbmlist_sel_list", label = "Select DataBase", 
+    shiny::selectizeInput(inputId ="fbmlist_sel_list", label = "Select list", 
                             multiple =  sel_multiple, width="100%", choices = db_files_choices,
                             options = list(
                               placeholder = 'Please select an option below',
@@ -121,14 +121,14 @@ server_generate <- function(input,output,session, values){
   output$create_on_name <- renderUI({
     
     req(input$fbmlist_select)
-    textInput("fbmlist_create_on_name", label = h3("New List Name"), value = "", placeholder = "Write a List Name")
+    textInput("fbmlist_create_on_name", label = h3("New list name"), value = "", placeholder = "Write a list name")
   })
   
   output$savelist_on_btn <- renderUI({
     
     req(input$fbmlist_select)
     #shiny::actionButton("fbmlist_save", label = "Save List", icon = icon("save"))
-    shinysky::actionButton2("fbmlist_save", label = "Save List", icon = "save", icon.library = "bootstrap")
+    shinysky::actionButton2("fbmlist_save", label = "Save list", icon = "save", icon.library = "bootstrap")
   })
 
 
@@ -382,7 +382,7 @@ server_generate <- function(input,output,session, values){
       gen_headers <- c("Numeration","Is_control", "Scale_audpc", "Family_AcceNumb", 
                         "Cycle"	, "Seed_source", "Simultanious_trials", "Previous_trials")
       
-           if(all(is.element(gen_headers,names(chosen_gmtl_table)))){  
+      if(all(is.element(gen_headers,names(chosen_gmtl_table)))){  
       
               gen_list_tbl <- chosen_gmtl_table
         
@@ -409,6 +409,7 @@ server_generate <- function(input,output,session, values){
       
       
       #foreign::write.dbf(dataframe = chosen_gmtl_table, file = fbmlist_name_dbf, factor2char = FALSE)
+      gen_list_tbl <- gen_list_tbl
       
       crop <- input$fbmlist_sel_crop
       if(crop=="potato")      { fbmlist_name_dbf <- paste("PT",fbmlist_name_dbf,sep = "_") }
@@ -441,7 +442,7 @@ server_generate <- function(input,output,session, values){
       shinyjs::reset("form-gen")
       shinyjs::reset("fbmlist_sel_type")
       
-      shinysky::showshinyalert(session, "alert_fbmlist_on", paste("Material List successfully created!", "success"), 
+      shinysky::showshinyalert(session, "alert_fbmlist_on", paste("Material List successfully created!"), 
                                styleclass = "success")
      
       

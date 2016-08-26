@@ -37,7 +37,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
 
                                 ),
                                 
-                                column(6, selectizeInput("fbmlist_sel_type_new", "Type of DataBase", width="100%", selected = 2,
+                                column(6, selectizeInput("fbmlist_sel_type_new", "Select database", width="100%", selected = 2,
                                                          choices = c("Institutional","Local")))
                                 
                                 
@@ -47,7 +47,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                 #column(6, selectizeInput("fbmlist_sel_list", "Select data base", width="100%",
                                 #                         choices = db_files_choices )),
                                 column(6, uiOutput("sel_list_new_btn")),
-                                column(6, shiny::actionButton("fbmlist_connect_new", "Connect DB", icon("fa fa-database"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4", width = 150))
+                                column(6, shiny::actionButton("fbmlist_connect_new", "Connect", icon("fa fa-database"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4", width = 150))
                               ),
                               
                               tags$style(type='text/css', "#fbmlist_sel_list_new { width:100%; margin-top: 25px;}"),
@@ -67,7 +67,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                             fluidRow(
                                               box(
                                                 #"Ingrese una lista de familias o clones", width = 4, status = "primary", height = "730px",
-                                                title = "Ingrese una lista de familias o clones", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
+                                                title = "Paste a list of families", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
                                                 br(),
                                                 br(),
                                                 tags$textarea(id="fbmlist_txtarea_new", rows=30, cols=31, ""),

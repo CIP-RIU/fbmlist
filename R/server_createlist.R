@@ -116,7 +116,7 @@ server_createlist <- function(input,output,session, values){
       }
     }
     
-    shiny::selectizeInput(inputId ="fbmlist_sel_list_new", label = "Select DataBase", 
+    shiny::selectizeInput(inputId ="fbmlist_sel_list_new", label = "Select list", 
                           multiple =  sel_multiple, width="100%", choices = db_files_choices,
                           options = list(
                             placeholder = 'Please select an option below',
