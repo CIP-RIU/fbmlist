@@ -340,8 +340,8 @@ server_generate <- function(input,output,session, values){
    
     #Adding the crop notation 
     crop <- input$fbmlist_sel_crop
-    if(crop=="potato")      { fbmlist_name_dbf_crp <- paste("PT",fbmlist_name_dbf,sep = "_") }
-    if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP",fbmlist_name_dbf,sep = "_") } 
+    if(crop=="potato")      { fbmlist_name_dbf_crp <- paste("PT","clon", fbmlist_name_dbf,sep = "_") }
+    if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP","clon", fbmlist_name_dbf,sep = "_") } 
     #End of crop notation
     
     
