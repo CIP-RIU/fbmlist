@@ -43,7 +43,7 @@ ui <- dashboardPage(skin = "yellow",
                                               sidebarMenu(id = "menu",
                                                           menuSubItem("Management", icon = icon("star"),
                                                                       tabName = tabNameS)
-                                              )
+                                                ) 
                                      )
                     ),
                     dashboardBody(
