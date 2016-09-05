@@ -385,8 +385,8 @@ server_createlist <- function(input,output,session, values){
     
     crop <- input$fbmlist_sel_crop_new
     
-    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","new",fbmlist_name_dbf,sep = "_")}
-    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","new",fbmlist_name_dbf,sep = "_")} 
+    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","fam",fbmlist_name_dbf,sep = "_")}
+    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","fam",fbmlist_name_dbf,sep = "_")} 
     
     fbmlist_name_dbf <- fbmlist_name_dbf
      

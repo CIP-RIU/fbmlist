@@ -412,8 +412,8 @@ server_generate <- function(input,output,session, values){
       gen_list_tbl <- gen_list_tbl
       
       crop <- input$fbmlist_sel_crop
-      if(crop=="potato")      { fbmlist_name_dbf <- paste("PT",fbmlist_name_dbf,sep = "_") }
-      if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP",fbmlist_name_dbf,sep = "_") } 
+      if(crop=="potato")      { fbmlist_name_dbf <- paste("PT","clon",fbmlist_name_dbf,sep = "_") }
+      if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP","clon",fbmlist_name_dbf,sep = "_") } 
       
       
       fbmlist_name_dbf <- paste(fbmlist_name_dbf,".rds",sep = "")
