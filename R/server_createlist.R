@@ -224,7 +224,7 @@ server_createlist <- function(input,output,session, values){
                           mtl_table_names <- names(mtl_table)
                           mtl_headers <- mtl_headers[mtl_headers %in% mtl_table_names]
                           
-                          temp_mtl_table <- mtl_table[,mtl_headers ]
+                          temp_mtl_table <- mtl_table[, mtl_headers ]
                          
                           
                           
@@ -371,6 +371,8 @@ server_createlist <- function(input,output,session, values){
   
     fbmlist_name_dbf  <- str_trim(string = input$fbmlist_create_new_name, side = "both")
     fbmlist_name_dbf  <- gsub("\\s+", "_", fbmlist_name_dbf)
+    
+    fbmlist_name_dbf_extra <- fbmlist_name_dbf #temp varible to check if name is empty
 
     fbmlist_researchername_dbf  <- str_trim(string = input$fbmlist_researchername_new, side = "both")
     fbmlist_researchername_dbf  <- gsub("\\s+", "_", fbmlist_researchername_dbf)
@@ -381,6 +383,12 @@ server_createlist <- function(input,output,session, values){
     fbmlist_breedercode_dbf  <- str_trim(string = input$fbmlist_breedercode_new, side = "both")
     fbmlist_breedercode_dbf   <- gsub("\\s+", "_", fbmlist_breedercode_dbf)
     
+    crop <- input$fbmlist_sel_crop_new
+    
+    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","new",fbmlist_name_dbf,sep = "_")}
+    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","new",fbmlist_name_dbf,sep = "_")} 
+    
+    fbmlist_name_dbf <- fbmlist_name_dbf
      
     #All the files names --------------------------------------------
     
@@ -407,7 +415,7 @@ server_createlist <- function(input,output,session, values){
          
       
      } 
-       else if(fbmlist_name_dbf == ""){ 
+       else if(fbmlist_name_dbf_extra == ""){ 
     
       #shinyBS::createAlert(session, "alert_fbmlist_new", "fbdoneAlert", title = "Warning",style = "warning",
       #                     content = "Please Type a Material List Name", append = TRUE, dismiss = FALSE)
@@ -442,14 +450,14 @@ server_createlist <- function(input,output,session, values){
                                   styleclass = "warning")       
      } 
        else {
- 
-      crop <- input$fbmlist_sel_crop_new
+         
+       #crop <- input$fbmlist_sel_crop_new
       
-      if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","new",fbmlist_name_dbf,sep = "_")}
-      if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","new",fbmlist_name_dbf,sep = "_")} 
+#      if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","new",fbmlist_name_dbf,sep = "_")}
+#      if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","new",fbmlist_name_dbf,sep = "_")} 
       
-      #foreign::write.dbf(dataframe = chosen_gmtl_table, file = fbmlist_name_dbf, factor2char = FALSE)
-      fbmlist_name_dbf <- paste(fbmlist_name_dbf,".rds", sep = "")
+       #foreign::write.dbf(dataframe = chosen_gmtl_table, file = fbmlist_name_dbf, factor2char = FALSE)
+       fbmlist_name_dbf <- paste(fbmlist_name_dbf,".rds", sep = "")
       
       # Contruction of the Intermediate DataBase (User inputs Table) ------------
       
@@ -518,7 +526,7 @@ server_createlist <- function(input,output,session, values){
       #saveRDS(new_list_tbl, file = fbmlist_name_dbf)
       ##
       
-      mtl_files()
+      #mtl_files()
       
       #shinyBS::createAlert(session, "alert_fbmlist_new", "fbdoneAlert", title = "Sucessfully Created!",
       #                     content = "Material List successfully created!", append = FALSE, dismiss = FALSE)
