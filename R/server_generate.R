@@ -48,6 +48,8 @@ server_generate <- function(input,output,session, values){
       germlist_db <- join_books
     }
     
+    n_row <- nrow(germlist_db)
+    germlist_db <-  mutate(germlist_db, IDX = 1:n_row)
     
     germlist_db
     
@@ -143,10 +145,14 @@ server_generate <- function(input,output,session, values){
                         {
                          
                           row_click <- NULL
+                         
                           mtl_table <- gmtl_data()
-                          
+                         
+                          #col_headers <- c("Accession_Number", "Female_AcceNumb","Female_codename", "Male_AcceNumb" ,"Male_codename", "Population" ,"IDX")
                           mtl_table <- mtl_table[,1:6]
-                          
+                           
+                          n_row <- nrow(mtl_table)
+                          mtl_table <-  mutate(mtl_table, IDX = 1:n_row)
                          
                           #col_names <- c("ACCNum", "ACCNam", "COLLNUMB", "POP", "PEDIGREE") 
                           #mtl_table <- mtl_table[col_names] #show cols selected
@@ -156,102 +162,75 @@ server_generate <- function(input,output,session, values){
                           
                           if(input$fbmlist_txtarea!=""){
                             
-                            mtl_table <-  mutate(mtl_table, IDX = 1:n())
+                            #Deprecated IDX 
+                            #mtl_table <-  mutate(mtl_table, IDX = 1:n())
+                            #End deprecated IDX
+                            
                             
                             search_filter <- str_split(input$fbmlist_txtarea,"\\n")[[1]]
                             search_filter <- stringr::str_trim(search_filter,side = "both")
                             
                               mtl_table_f <- filter(mtl_table, Accession_Number %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-#                               row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
-#                               print(row_click)
-                              #print(row_click)
-                            
+
                               if(nrow(mtl_table_f)==0 &&  is.element("Accession_Name",names(mtl_table_f))) {
                               
                               mtl_table_f <- dplyr::filter(mtl_table, Accession_Name %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                              # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+
                               }
                               
                               if(nrow(mtl_table_f)==0 &&  is.element("Accession_Code",names(mtl_table_f))) {
                                 
                                 mtl_table_f <- dplyr::filter(mtl_table, Accession_Code %in% search_filter)
-                                #row_click <- as.numeric(rownames(mtl_table_f))
-                                # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+
                               }
 
                               if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
                                 
                                 mtl_table_f <- dplyr::filter(mtl_table, Female_AcceNumb %in% search_filter)
-                                #row_click <- as.numeric(rownames(mtl_table_f))
-                                # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+
                               } 
                               
                               if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
                                 
                                 mtl_table_f <- dplyr::filter(mtl_table, Female_codename %in% search_filter)
-                                #row_click <- as.numeric(rownames(mtl_table_f))
-                                # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+
                               }  
                               
                               if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb",names(mtl_table_f))) {
                                 
                                 mtl_table_f <- dplyr::filter(mtl_table, Male_AcceNumb %in% search_filter)
-                                #row_click <- as.numeric(rownames(mtl_table_f))
-                                # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
-                                #print(row_click)
+
                               }    
                               
                               if(nrow(mtl_table_f)==0 &&  is.element("Male_codename",names(mtl_table_f))) {
                                 
                                 mtl_table_f <- dplyr::filter(mtl_table, Male_codename %in% search_filter)
-                                #row_click <- as.numeric(rownames(mtl_table_f))
-#                                 row_click <- mtl_table_f$IDX 
-#                                 print(row_click)
+
                               }  
                               
                               if(nrow(mtl_table_f)==0  &&  is.element("Population",names(mtl_table_f))) {
                              
                                mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
-                               #print(mtl_table_f)
-                               #row_click <- as.numeric(rownames(mtl_table_f))
-#                                row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
-#                                print(row_click)
+
                             }
                               
-                              if(nrow(mtl_table_f)==0  &&  is.element("Cycle",names(mtl_table_f))) {
+                            if(nrow(mtl_table_f)==0  &&  is.element("Cycle",names(mtl_table_f))) {
                                 
                                 mtl_table_f <- dplyr::filter(mtl_table, Cycle %in% search_filter)
-                                #row_click <- as.numeric(rownames(mtl_table_f))
-#                                 row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
-#                                 print(row_click)
-                               }  
 
+                            }  
+
+                              
+                              
                             if(nrow(mtl_table_f)>0){ 
-                             
-                              row_click <- as.numeric(mtl_table_f$IDX)
-                             
+                                row_click <- as.numeric(mtl_table_f$IDX)
+                                Records <- rownames(mtl_table_f) %>% as.numeric(.)
+                            } 
                               
-                              #print(row_click)
-                              
-                              
-                              #row_click <- row_click
-                              # row_click <- as.numeric(rownames(mtl_table))
-                            }
-                              
-#                               print("previo")
-#                               print(mtl_table)
-#                               print(row_click)
-                              #row_click <- as.numeric(rownames(mtl_table))
-                              #row_click_global <<- dplyr::select(mtl_table_f, IDX)[[1]]
-#                               print("subset")
-#                               print("previo fin")
-                              
-                          }   
-                            DT::datatable( mtl_table, rownames = FALSE, 
+       
+                          DT::datatable( mtl_table_f, rownames = FALSE, 
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
-                                          selection = list( mode = "multiple", selected = row_click), 
+                                          selection = list( mode = "multiple", selected = Records), 
                                           filter = 'bottom',
                                           extensions = 'Buttons', options = list(
                                             dom = 'Bfrtip',
@@ -265,28 +244,28 @@ server_generate <- function(input,output,session, values){
                                           )
                             )
 
-#                           } else {
-#                           
-#                           
-#                           
-#                           DT::datatable(mtl_table, rownames = FALSE, 
-#                                         #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
-#                                         selection = list( mode = "multiple", selected = row_click), 
-#                                                    filter = 'bottom',
-#                                                    extensions = 'Buttons', options = list(
-#                                                     dom = 'Bfrtip',
-#                                                     buttons = 
-#                                                       list(list(
-#                                                         extend = 'collection',
-#                                                         buttons = c('csv', 'excel'),
-#                                                         text = 'Download'
-#                                                       ))
-#                                                     
-#                                                   )
-#                                         )
-#                           
-#                           } 
-                            #end ELSE
+                          } else {
+
+
+
+                          DT::datatable(mtl_table, rownames = FALSE,
+                                        #selection = list( mode= "multiple",  selected =  rownames(mtl_table)),
+                                        selection = list( mode = "multiple"),
+                                                   filter = 'bottom',
+                                                   extensions = 'Buttons', options = list(
+                                                    dom = 'Bfrtip',
+                                                    buttons =
+                                                      list(list(
+                                                        extend = 'collection',
+                                                        buttons = c('csv', 'excel'),
+                                                        text = 'Download'
+                                                      ))
+
+                                                  )
+                                        )
+
+                          }
+
                           
                           
                           
@@ -297,19 +276,97 @@ server_generate <- function(input,output,session, values){
   
   gmtl_row_index <- eventReactive(input$fbmlist_select,{
     
-   # row_click_global
-    print("row")    
-    print(input$fbmlist_table_rows_selected)
-    print("print row")
+    row_click <- NULL
+    mtl_table <- gmtl_data()
     
-    row_select <- input$fbmlist_table_rows_selected #comand to get selected values
-    row_select
-#     row_filter <- input$fbmlist_table_rows_all #comand to get filtered values
-#     row_mtlist_selection <- dplyr::intersect(row_select,row_filter)
-#     row_mtlist_selection <- sort(row_mtlist_selection)
-#    
-  }) 
+    mtl_table <- mtl_table[,1:6]
+    
+    n_row <- nrow(mtl_table)
+    mtl_table <-  mutate(mtl_table, IDX = 1:n_row)
+    
+    if(input$fbmlist_txtarea!=""){
+      
+      #Deprecated IDX 
+      #mtl_table <-  mutate(mtl_table, IDX = 1:n())
+      #End deprecated IDX
+      
+      
+      search_filter <- str_split(input$fbmlist_txtarea,"\\n")[[1]]
+      search_filter <- stringr::str_trim(search_filter,side = "both")
+      
+      mtl_table_f <- filter(mtl_table, Accession_Number %in% search_filter)
+      #row_click <- as.numeric(rownames(mtl_table_f))
+      #                               row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+      #                               print(row_click)
+      #print(row_click)
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Accession_Name",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Accession_Name %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+        # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+      }
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Accession_Code",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Accession_Code %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+        # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+      }
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Female_AcceNumb %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+        # row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+      } 
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Female_codename %in% search_filter)
+    
+      }  
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Male_AcceNumb %in% search_filter)
+     
+      }    
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Male_codename",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Male_codename %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+       
+      }  
+      
+      if(nrow(mtl_table_f)==0  &&  is.element("Population",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
+      
+      }
+      
+      if(nrow(mtl_table_f)==0  &&  is.element("Cycle",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(mtl_table, Cycle %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+        #                                 row_click <- dplyr::select(mtl_table_f, IDX)[[1]]
+        #                                 print(row_click)
+      }  
+      
+      if(nrow(mtl_table_f)>0){ 
+        row_click <- as.numeric(mtl_table_f$IDX)
+      } else {
+        row_click <- NULL
+      }
+      
+      row_click
 
+#    
+    } 
+    
+})
+  
   
   output$fbmlist_choosen_table  <- DT::renderDataTable({
     
@@ -340,7 +397,7 @@ server_generate <- function(input,output,session, values){
    
     #Adding the crop notation 
     crop <- input$fbmlist_sel_crop
-    if(crop=="potato")      { fbmlist_name_dbf_crp <- paste("PT","clon", fbmlist_name_dbf,sep = "_") }
+    if(crop=="potato")      { fbmlist_name_dbf <- paste("PT","clon", fbmlist_name_dbf,sep = "_") }
     if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP","clon", fbmlist_name_dbf,sep = "_") } 
     #End of crop notation
     
@@ -412,8 +469,8 @@ server_generate <- function(input,output,session, values){
       gen_list_tbl <- gen_list_tbl
       
       crop <- input$fbmlist_sel_crop
-      if(crop=="potato")      { fbmlist_name_dbf <- paste("PT","clon",fbmlist_name_dbf,sep = "_") }
-      if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP","clon",fbmlist_name_dbf,sep = "_") } 
+#       if(crop=="potato")      { fbmlist_name_dbf <- paste("PT","clon",fbmlist_name_dbf,sep = "_") }
+#       if(crop=="sweetpotato") { fbmlist_name_dbf <- paste("SP","clon",fbmlist_name_dbf,sep = "_") } 
       
       
       fbmlist_name_dbf <- paste(fbmlist_name_dbf,".rds",sep = "")
@@ -454,6 +511,7 @@ server_generate <- function(input,output,session, values){
 
     
     })
+  
   
 }
 

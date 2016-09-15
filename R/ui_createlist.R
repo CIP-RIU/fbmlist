@@ -38,7 +38,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                 ),
                                 
                                 column(6, selectizeInput("fbmlist_sel_type_new", "Select database", width="100%", selected = 2,
-                                                         choices = c("Institutional","Local")))
+                                                         choices = c("Institutional")))
                                 
                                 
                               ),

@@ -101,10 +101,6 @@
       #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
       
       lg_dbf <- length(dbf_file_list)
-      
-      
-      
-      
       if(lg_dbf == 0){ gmtfiles <- "" }
       if(lg_dbf>0)   { 
           ignore_temps <- grepl(pattern = "~\\$",x =  dbf_file_list)
@@ -151,12 +147,17 @@
 #' @describeIn Creation of accession names according to the number of repetitions
 #'
        
-accessname_code <- function(accession_name, nrep){
+accessname_code <- function(accession_name, accession_number, nrep){
      
      #cipnumber structure: cipnumber_new = cipnumber_family.cipnumber_tail
      accen_name <- accession_name
+     
      accen_tail <- formatC(1:nrep, width = 3, format = "d", flag = "0")
-     accen_new <- paste(accen_name, nrep, sep = "")
+     
+     temp_nrep <-  stringr::str_sub(accession_number,-3,-1)
+     
+     accen_new <- paste(accen_name, temp_nrep, sep = "")
+     
      accen_new <- paste(accen_new, accen_tail, sep = ".")
      
 }
@@ -170,5 +171,8 @@ headers_new_list <-  function(){
                                 "Cycle", "Is_control", "Scale_audpc", "Material_list_name" , "Researcher_Name" ,    "Continent"   ,       
                                 "Country", "Seed_source",  "Simultanious_trials", "Previous_trials","Date_Created" ) 
 }
+
+
+
 
 

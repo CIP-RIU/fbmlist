@@ -4,7 +4,7 @@
 \alias{accessname_code}
 \title{Accession Name Creation}
 \usage{
-accessname_code(accession_name, nrep)
+accessname_code(accession_name, accession_number, nrep)
 }
 \description{
 Accession Name Creation

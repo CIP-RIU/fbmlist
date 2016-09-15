@@ -19,28 +19,39 @@ server_createlist <- function(input,output,session, values){
     if(n==1){
       #germlist_db <- readRDS(dbf_file)
       path <- fbglobal::get_base_dir()
+      print(path)
       path <- paste(path,dbf_file,sep = "\\")
+      
       
       #print(path)
       #germlist_db <- readRDS(dbf_file)
       germlist_db <- readRDS(path)
+      
     }
 
-    if(n > 1){
-      combine <- list() 
-      for(i in 1:n){  
-        
-        path <- fbglobal::get_base_dir()
-        path <- paste(path,dbf_file,sep = "\\")
-        combine[[i]] <- readRDS(path = dbf_file[i])
-        #combine[[i]] <- readRDS(file = dbf_file[i]) 
-      } 
-      join_books <- data.table::rbindlist(combine,fill = TRUE)
-      join_books <- as.data.frame(join_books)
-      germlist_db <- join_books
-    }
- 
+    #------- Code for combining material list
+    # if(n > 1){
+    #   combine <- list() 
+    #   for(i in 1:n){  
+    #     
+    #     path <- fbglobal::get_base_dir()
+    #     path <- paste(path,dbf_file,sep = "\\")
+    #     combine[[i]] <- readRDS(path = dbf_file[i])
+    #     #combine[[i]] <- readRDS(file = dbf_file[i]) 
+    #   } 
+    #   join_books <- data.table::rbindlist(combine,fill = TRUE)
+    #   join_books <- as.data.frame(join_books)
+    #   germlist_db <- join_books
+    # }
+    #--------- End of combining list
+    
+    #germlist_db
+    ### Number of row of germilist_db 
+    n_row <- nrow(germlist_db)
+    
+    germlist_db <-  mutate(germlist_db, IDX = 1:n_row)
     germlist_db
+    
     
   }) 
   
@@ -96,11 +107,13 @@ server_createlist <- function(input,output,session, values){
         db_files_choices <- list("potato_pedigree.rds")
         sel_multiple <- FALSE                         
       }
-      if(type_db=="Local"){ 
-        
-        db_files_choices <- mtl_db_sel[str_detect(mtl_db_sel , "PT")] 
-        sel_multiple <- TRUE
-      }
+      # Deprecated Code, just pedigree db ---------------------------------------
+      # if(type_db=="Local"){ 
+      #   
+      #   db_files_choices <- mtl_db_sel[str_detect(mtl_db_sel , "PT")] 
+      #   sel_multiple <- TRUE
+      # }
+      #
     }
     
     if(crop == "sweetpotato") {
@@ -110,10 +123,13 @@ server_createlist <- function(input,output,session, values){
         db_files_choices <- list("sweetpotato_pedigree.rds")
         sel_multiple <- FALSE   
       }
-      if(type_db=="Local"){ 
-        db_files_choices <- mtl_db_sel[str_detect(mtl_db_sel , "SP")]
-        sel_multiple <- TRUE 
-      }
+      
+      # Deprecated Code, just pedigree db ---------------------------------------
+      # if(type_db=="Local"){ 
+      #   db_files_choices <- mtl_db_sel[str_detect(mtl_db_sel , "SP")]
+      #   sel_multiple <- TRUE 
+      # }
+      #
     }
     
     shiny::selectizeInput(inputId ="fbmlist_sel_list_new", label = "Select list", 
@@ -219,33 +235,28 @@ server_createlist <- function(input,output,session, values){
                           #if(!is.null(p)){ mtl_table <- gmtl_data_new()}
                          
                           mtl_headers <- c("Accession_Number", "Female_AcceNumb", "Female_codename", "Male_AcceNumb", 
-                          "Male_codename", "Population", "Cycle", "Date_Created") 
+                          "Male_codename", "Population", "Cycle", "Date_Created", "IDX") 
                           
                           mtl_table_names <- names(mtl_table)
                           mtl_headers <- mtl_headers[mtl_headers %in% mtl_table_names]
                           
-                          temp_mtl_table <- mtl_table[, mtl_headers ]
-                         
-                          
-                          
+                          temp_mtl_table <- mtl_table[, mtl_headers]
+
                           if(input$fbmlist_txtarea_new!=""){
                             
-                            temp_mtl_table <-  mutate(temp_mtl_table, IDX = 1:n())
+                            #temp_mtl_table <-  mutate(temp_mtl_table, IDX = 1:n())
                             
                             search_filter <- str_split(input$fbmlist_txtarea_new,"\\n")[[1]]
                             search_filter <- stringr::str_trim(search_filter,side = "both")
-                            #mtl_table_f <- filter(mtl_table, Accession_Number %in% search_filter)
-                            mtl_table_f <- filter(temp_mtl_table, Accession_Number %in% search_filter)
-
-                           
+                            #mtl_table_f  <- filter(mtl_table, Accession_Number %in% search_filter)
+                            mtl_table_f   <- filter(temp_mtl_table, Accession_Number %in% search_filter)
                             
                             
-                          if(nrow(mtl_table_f)==0 &&  is.element("Accession_Name",names(mtl_table_f))) {
+                            if(nrow(mtl_table_f)==0 &&  is.element("Accession_Name",names(mtl_table_f))) {
                               #mtl_table_f <- dplyr::filter(mtl_table, Accession_Name %in% search_filter)
                               mtl_table_f <- dplyr::filter(temp_mtl_table, Accession_Name %in% search_filter)
                               #row_click <- as.numeric(rownames(mtl_table_f))
                             }
-                            
                             
                             if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
                               
@@ -285,23 +296,20 @@ server_createlist <- function(input,output,session, values){
                               #row_click <- as.numeric(rownames(mtl_table_f))
                             }  
                             
-                            
-                            
-                            
-                            
-                            
-                          if(nrow(mtl_table_f)>0){ 
-                              #mtl_table <- mtl_table_f
-                              #temp_mtl_table <- mtl_table_f
-                              #row_click <- as.numeric(rownames(temp_mtl_table))
+
+                            if(nrow(mtl_table_f)>0){ 
+                              # Row click 
                               row_click <- as.numeric(mtl_table_f$IDX)
+                              N <- rownames(mtl_table_f)%>% as.numeric(.)
+                              print(N)
                             }
 
                             
                             #DT::datatable(mtl_table, rownames = FALSE, 
-                            DT::datatable(temp_mtl_table, rownames = FALSE,
+                            #DT::datatable(temp_mtl_table, rownames = FALSE,  ##temp_mtl_table is the all table
+                            DT::datatable(mtl_table_f, rownames = FALSE,      ##filtered table
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
-                                          selection = list( mode = "multiple", selected = row_click), 
+                                          selection = list( mode = "multiple", selected = N), 
                                           filter = 'bottom',
                                           extensions = 'Buttons', options = list(
                                             dom = 'Bfrtip',
@@ -334,7 +342,7 @@ server_createlist <- function(input,output,session, values){
                                           )
                             )
                             
-                          }
+                        }
  
                           
                         }) #end of Progress
@@ -344,31 +352,102 @@ server_createlist <- function(input,output,session, values){
   #Row selected by User  ----------------------------------------------------
   gmtl_row_index_new <- eventReactive(input$fbmlist_select_new,{
   
-  #gmtl_row_index_new <- reactive({
+    temp_mtl_table <- gmtl_data_new()
+      
+    if(input$fbmlist_txtarea_new!=""){
+      
+      #temp_mtl_table <-  mutate(temp_mtl_table, IDX = 1:n())
+      
+      search_filter <- str_split(input$fbmlist_txtarea_new,"\\n")[[1]]
+      search_filter <- stringr::str_trim(search_filter,side = "both")
+      #mtl_table_f  <- filter(mtl_table, Accession_Number %in% search_filter)
+      mtl_table_f   <- filter(temp_mtl_table, Accession_Number %in% search_filter)
+      
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Accession_Name",names(mtl_table_f))) {
+        #mtl_table_f <- dplyr::filter(mtl_table, Accession_Name %in% search_filter)
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Accession_Name %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      }
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Female_AcceNumb %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      } 
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Female_codename %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      }  
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb", names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Male_AcceNumb %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      }    
+      
+      if(nrow(mtl_table_f)==0 &&  is.element("Male_codename", names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Male_codename %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      }  
+      
+      
+      if(nrow(mtl_table_f)==0  &&  is.element("Population", names(mtl_table_f))) {
+        #mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Population %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      }
+      
+      
+      if(nrow(mtl_table_f)==0  &&  is.element("Cycle", names(mtl_table_f))) {
+        
+        mtl_table_f <- dplyr::filter(temp_mtl_table, Cycle %in% search_filter)
+        #row_click <- as.numeric(rownames(mtl_table_f))
+      }  
+
+      if(nrow(mtl_table_f)>0){ 
+        # Row click 
+        row_click <- as.numeric(mtl_table_f$IDX)
+        #N <- rownames(mtl_table_f)%>% as.numeric(.)
+      } else {
+        
+        row_click <- NULL
+      }
+      
+      row_click
     
-    row_select <- input$fbmlist_table_new_rows_selected #comand to get selected values
-    row_filter <- input$fbmlist_table_new_rows_all #comand to get filtered values
-    row_mtlist_selection <- dplyr::intersect(row_select,row_filter)
-    row_mtlist_selection <- sort(row_mtlist_selection)
-    
-  }) 
-  
+  } 
+})
+
+
   # Observers of fbmlist ----------------------------------------------------
 
   shiny::observeEvent(input$fbmlist_save_new,{
-  
     
     index <- gmtl_row_index_new()
+    
+    #print(index)
+    
     mtl_table <- gmtl_data_new()
+    #print(mtl_table)
+    
     chosen_gmtl_table_new <-  mtl_table[index, ]
+    #print(chosen_gmtl_table_new)
+    
+    
     family_list_choosen <- chosen_gmtl_table_new[,"Accession_Number"]
+    #print(family_list_choosen)
+    
     
     # Logic parameter to do not combine dataset with cipnumber with points. any 
     #(if one of them is false, then has_point_cipnr is TRUE)
     has_point_cipnbr <- any(stringr::str_detect(string = chosen_gmtl_table_new[,"Accession_Number"], pattern = "\\."))
     
     # Getting Parameters from User Begin --------------------------------------------
-  
+    
     fbmlist_name_dbf  <- str_trim(string = input$fbmlist_create_new_name, side = "both")
     fbmlist_name_dbf  <- gsub("\\s+", "_", fbmlist_name_dbf)
     
@@ -477,13 +556,15 @@ server_createlist <- function(input,output,session, values){
       
       out_cipnumber_rep <- unlist(lapply(1:length(header), function(x) cipnumber_creation(header[x], nrep[x])$cipnumbers_rep))
        
-      out_accessnamecode_creation <- unlist(lapply(1:length(header), function(x) accessname_code(fbmlist_breedercode_dbf , nrep[x])))
-
+      #out_access_namecode_creation <- unlist(lapply(1:length(header), function(x) accessname_code(fbmlist_breedercode_dbf , nrep[x])))
+      out_access_namecode_creation <- unlist(lapply(1:length(header), function(x) accessname_code(fbmlist_breedercode_dbf, header[x], nrep[x])))
+     
+      
       user_parameters <-   list( Numeration = 1:length(out_cipnumber_creation),
                                  Accession_Number_crt =  out_cipnumber_creation,
                                  Accession_Number = out_cipnumber_rep,
                                  Accession_Name = NA,
-                                 Accession_code = out_accessnamecode_creation,
+                                 Accession_code = out_access_namecode_creation,
                                  Is_control = NA,
                                  Scale_audpc = NA,
                                  #Family_AcceNumb = NA
@@ -506,9 +587,18 @@ server_createlist <- function(input,output,session, values){
       
       new_list_tbl <- dplyr::left_join(chosen_gmtl_table_new, intermediate_mlist_db, by = "Accession_Number")
       new_list_tbl <- new_list_tbl[,-1]
-      names(new_list_tbl)[8] <- "Accession_Number"
+     
+      names(new_list_tbl)[9] <- "Accession_Number"
+      
+      
+      print("new list tabla")
+      print(head(new_list_tbl))
+      print("new")
       
       orden <- headers_new_list() #from utils.R
+      print("orden")
+      print(orden)
+      
       #saveRDS(new_list_tbl,"new_list_tbl1.rds")
       
       new_list_tbl <- new_list_tbl[,orden]
