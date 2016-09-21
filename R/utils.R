@@ -2,7 +2,7 @@
 #' @describeIn Read the table from M.List DB an write into the computer
 #' 
 #' 
- fbmlist_data <- function(){
+  fbmlist_data <- function(){
   
 #     mtl_drv <- dbDriver("MySQL");
 #     mtl_con<-dbConnect(mtl_drv, user='cipmateriallist',password='c$?ZYmra2KgJvmH0616',host='176.34.248.121',dbname='cipmateriallist');
@@ -147,7 +147,7 @@
 #' @describeIn Creation of accession names according to the number of repetitions
 #'
        
-accessname_code <- function(accession_name, accession_number, nrep){
+  accessname_code <- function(accession_name, accession_number, nrep){
      
      #cipnumber structure: cipnumber_new = cipnumber_family.cipnumber_tail
      accen_name <- accession_name
@@ -162,9 +162,7 @@ accessname_code <- function(accession_name, accession_number, nrep){
      
 }
   
-#  
-
-headers_new_list <-  function(){
+  headers_new_list <-  function(){
   
   out <- c("Numeration", "Accession_Number", "Accession_Name", "Accession_code", 
                                 "Female_AcceNumb", "Female_codename", "Male_AcceNumb", "Male_codename", "Population",

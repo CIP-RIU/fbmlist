@@ -15,6 +15,7 @@ server_generate <- function(input,output,session, values){
     #stype <- length(input$fbmlist_sel_type)
     #print(length(input$fbmlist_connect))
     dbf_file <- input$fbmlist_sel_list
+   
     n <- length(input$fbmlist_sel_list)
     
     #print(dbf_file)
@@ -27,6 +28,7 @@ server_generate <- function(input,output,session, values){
         path <- fbglobal::get_base_dir()
         path <- paste(path,dbf_file,sep = "\\")
        
+        print(path)
         #print(path)
         #germlist_db <- readRDS(dbf_file)
         germlist_db <- readRDS(path)
@@ -101,16 +103,18 @@ server_generate <- function(input,output,session, values){
     
    if(crop == "sweetpotato") {
    
-     if(type_db=="Institutional") { 
-              db_files_choices <- list("dssweettrials_dpassport.rds" , "sweetpotato_pedigree.rds")
+     if(type_db=="Institutional") {     
+              db_files_choices <- list("dssweettrials_dpassport.rds", "sweetpotato_pedigree.rds")
               sel_multiple <- FALSE   
-        }
+     }
      if(type_db=="Local"){ 
               db_files_choices <- mtl_db_sel[str_detect(mtl_db_sel , "SP")]
               sel_multiple <- TRUE 
       }
    }
     
+    db_files_choices <- db_files_choices
+      
     shiny::selectizeInput(inputId ="fbmlist_sel_list", label = "Select list", 
                             multiple =  sel_multiple, width="100%", choices = db_files_choices,
                             options = list(
@@ -219,18 +223,16 @@ server_generate <- function(input,output,session, values){
                                 mtl_table_f <- dplyr::filter(mtl_table, Cycle %in% search_filter)
 
                             }  
-
-                              
-                              
+                  
                             if(nrow(mtl_table_f)>0){ 
                                 row_click <- as.numeric(mtl_table_f$IDX)
-                                Records <- rownames(mtl_table_f) %>% as.numeric(.)
+                                Search <- rownames(mtl_table_f) %>% as.numeric(.)
                             } 
                               
        
                           DT::datatable( mtl_table_f, rownames = FALSE, 
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
-                                          selection = list( mode = "multiple", selected = Records), 
+                                          selection = list( mode = "multiple", selected = Search), 
                                           filter = 'bottom',
                                           extensions = 'Buttons', options = list(
                                             dom = 'Bfrtip',
@@ -283,6 +285,8 @@ server_generate <- function(input,output,session, values){
     
     n_row <- nrow(mtl_table)
     mtl_table <-  mutate(mtl_table, IDX = 1:n_row)
+    
+    print(input$fbmlist_txtarea)
     
     if(input$fbmlist_txtarea!=""){
       
@@ -355,16 +359,32 @@ server_generate <- function(input,output,session, values){
       }  
       
       if(nrow(mtl_table_f)>0){ 
+        
         row_click <- as.numeric(mtl_table_f$IDX)
+        
       } else {
         row_click <- NULL
       }
       
-      row_click
+     # row_click
 
 #    
     } 
     
+    else {
+      
+      row_select <- input$fbmlist_table_rows_selected #comand to get selected values		
+      #row_filter <- input$fbmlist_table_new_rows_all #comand to get filtered values		    
+      #row_mtlist_selection <- dplyr::intersect(row_select,row_filter)		     
+     
+      row_mtlist_selection <- sort(row_select)
+      row_click <- row_mtlist_selection
+    }
+    
+    #print(row_select)
+    print(row_click)
+    row_click
+ 
 })
   
   
@@ -498,6 +518,8 @@ server_generate <- function(input,output,session, values){
       shinyjs::reset("fbmlist_sel_list")
       shinyjs::reset("form-gen")
       shinyjs::reset("fbmlist_sel_type")
+      #to do
+      #Refresh a the textArea
       
       shinysky::showshinyalert(session, "alert_fbmlist_on", paste("Material List successfully created!"), 
                                styleclass = "success")
