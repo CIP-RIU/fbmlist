@@ -10,8 +10,6 @@
 
 createlist_ui <- function(type = "tab", title = "Family List", name = "createList"){
   
-
-  
   shinydashboard::tabItem(tabName = name, 
                           h2(title),   
                           
@@ -22,25 +20,20 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                             box(
                               title = " ", width = 12, status = "primary", height = "250px",
                               #p("Seleccione un cultivo y una base de datos"),
-                              
-                              fluidRow(
-                                
-                               
+                               fluidRow(
                                 column(6, selectizeInput(inputId = "fbmlist_sel_crop_new", label = "Select crop", width="100%",
                                                          choices = c("potato","sweetpotato"),
                                                          options = list(
                                                            placeholder = 'Please select the crop',
                                                            onInitialize = I('function() { this.setValue(""); }')
                                                          )
-                                                         
                                 )#,
 
                                 ),
                                 
                                 column(6, selectizeInput("fbmlist_sel_type_new", "Select database", width="100%", selected = 2,
-                                                         choices = c("Institutional")))
-                                
-                                
+                                                         choices = c("Institutional"))
+                                )
                               ),
                               
                               fluidRow(
@@ -56,12 +49,8 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                             )#,
                      
                           ),
-                          
-                          
-                     #     Conditional Panel for Connect DB button ---------------------------------
-                          
-                    # div(
-                     #  id = "form2",
+
+                     #      ---------------------------------
                           conditionalPanel( condition = "output.show_mtable_new",  ##conditional Panel
                                             
                                             fluidRow(
@@ -71,6 +60,13 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                 br(),
                                                 br(),
                                                 tags$textarea(id="fbmlist_txtarea_new", rows=30, cols=31, ""),
+                                                
+                                                shiny::wellPanel(
+                                                  shiny::HTML("<b>Observations </b>"),
+                                                  shiny::textOutput("fbmlist_foundclones_new")
+                                                ),
+                                                
+                                                
                                                 br(),
                                                 br(),
                                                 br()
@@ -97,11 +93,9 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                             br(),
                                             br()
                           ),##fin conditional Panel
-                          
-                     #),
+
+                     # Conditional Panel for Connect DB button ---------------------------------
                      
-                     
-                          # Conditional Panel for Select and Save button ---------------------------------
                      div(
                        id = "form",
                           conditionalPanel( condition = "output.show_mtable_new",
@@ -115,6 +109,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                 uiOutput("continent_new_name"),
                                                 uiOutput("country_new_name"),
                                                 uiOutput("breedercode_new_name"),
+                                                shiny::selectInput(inputId = "new_type_trial",label = "Type of trial", c("Normal","PVS"), selected = 1),
                                                 br()
                                               ),
                                               

@@ -80,6 +80,12 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                                 br(),
                                 br(),
                                 tags$textarea(id="fbmlist_txtarea", rows=30, cols=31, ""),
+                                
+                                shiny::wellPanel(
+                                  shiny::HTML("<b>Observations </b>"),
+                                  shiny::textOutput("fbmlist_foundclones_gen")
+                                ),
+                                
                                 br(),
                                 br(),
                                 br()
@@ -118,7 +124,9 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                               title = "Fill your material list information", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
                               br(),
                               br(),
-                              uiOutput("create_on_name")
+                              uiOutput("create_on_name"),
+                              shiny::selectInput(inputId = "gen_type_trial",label = "Type of trial", c("Normal","PVS"), selected = 1 )
+                              
                               #textInput("text", label = h3("Text input"), value = "Enter text..."),
                               #textInput("text", label = h3("Text input"), value = "Enter text...")
                               

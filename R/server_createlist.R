@@ -141,6 +141,51 @@ server_createlist <- function(input,output,session, values){
     )
   })
   
+  output$fbmlist_foundclones_new <- renderText({
+    
+   mtl_table <- gmtl_data_new()
+   mtl_headers <- c("Accession_Number", "Female_AcceNumb", "Female_codename", "Male_AcceNumb", 
+                     "Male_codename", "Population", "Cycle", "Date_Created", "IDX") 
+    
+    mtl_table_names <- names(mtl_table)
+    mtl_headers <- mtl_headers[mtl_headers %in% mtl_table_names]
+    
+    temp_mtl_table <- mtl_table[, mtl_headers]
+    
+    #If textarea is diferent from "" or whistesapces then search your genotypes
+    if(input$fbmlist_txtarea_new!="" || !str_detect(input$fbmlist_txtarea_new, "[[:space:]]")){
+      
+      #trimming search filter
+        search_filter <- str_split(input$fbmlist_txtarea_new,"\\n")[[1]]
+        search_filter <- stringr::str_trim(search_filter,side = "both")
+        search_filter <- as.character(search_filter)
+        
+        #extracting columns Accesion Number and Accesion Name
+        material_db_accnum <- as.character(temp_mtl_table$Accession_Number)
+        #material_db_accname <- as.character(temp_mtl_table$Accession_Name)
+        
+        material_acc_union <- material_db_accnum
+        
+        out_dbacc_search <- setdiff(search_filter, material_acc_union) #find the element which are NOT in the inserction
+        out_dbacc_search <- out_dbacc_search[!is.na(out_dbacc_search)]
+        out_dbacc_search <- out_dbacc_search[out_dbacc_search!=""]
+        n_search <- length(out_dbacc_search)
+        
+        
+        # Show messages according to accesion founder in accesion number or accesion name
+        
+        if(n_search>0){ #for accession number, flag =1
+          out <- paste(out_dbacc_search, collapse = ", ")
+          out <- paste("N= ", n_search, " accesion(s) were not found: ", out, sep="")
+        } else {
+          out <- paste("", sep = "")
+        }
+        out
+        
+    }
+    
+  })
+  
   
   # RENDER_UI for User Inputs in Creation MTList ----------------------------  
   
@@ -258,44 +303,46 @@ server_createlist <- function(input,output,session, values){
                               #row_click <- as.numeric(rownames(mtl_table_f))
                             }
                             
-                            if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
-                              
-                              mtl_table_f <- dplyr::filter(temp_mtl_table, Female_AcceNumb %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                            } 
+                            # SEARCH ACCESSION BY DIFFERENTE PEDRIGREE ATRIBUTES (Temporary disable)   
                             
-                            if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
-                              
-                              mtl_table_f <- dplyr::filter(temp_mtl_table, Female_codename %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                            }  
-                            
-                            if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb", names(mtl_table_f))) {
-                              
-                              mtl_table_f <- dplyr::filter(temp_mtl_table, Male_AcceNumb %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                            }    
-                            
-                            if(nrow(mtl_table_f)==0 &&  is.element("Male_codename", names(mtl_table_f))) {
-                              
-                              mtl_table_f <- dplyr::filter(temp_mtl_table, Male_codename %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                            }  
-                            
-                            
-                            if(nrow(mtl_table_f)==0  &&  is.element("Population", names(mtl_table_f))) {
-                              #mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
-                              mtl_table_f <- dplyr::filter(temp_mtl_table, Population %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                            }
-                            
-                            
-                            if(nrow(mtl_table_f)==0  &&  is.element("Cycle", names(mtl_table_f))) {
-                              
-                              mtl_table_f <- dplyr::filter(temp_mtl_table, Cycle %in% search_filter)
-                              #row_click <- as.numeric(rownames(mtl_table_f))
-                            }  
-                            
+                            # if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
+                            #   
+                            #   mtl_table_f <- dplyr::filter(temp_mtl_table, Female_AcceNumb %in% search_filter)
+                            #   #row_click <- as.numeric(rownames(mtl_table_f))
+                            # } 
+                            # 
+                            # if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
+                            #   
+                            #   mtl_table_f <- dplyr::filter(temp_mtl_table, Female_codename %in% search_filter)
+                            #   #row_click <- as.numeric(rownames(mtl_table_f))
+                            # }  
+                            # 
+                            # if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb", names(mtl_table_f))) {
+                            #   
+                            #   mtl_table_f <- dplyr::filter(temp_mtl_table, Male_AcceNumb %in% search_filter)
+                            #   #row_click <- as.numeric(rownames(mtl_table_f))
+                            # }    
+                            # 
+                            # if(nrow(mtl_table_f)==0 &&  is.element("Male_codename", names(mtl_table_f))) {
+                            #   
+                            #   mtl_table_f <- dplyr::filter(temp_mtl_table, Male_codename %in% search_filter)
+                            #   #row_click <- as.numeric(rownames(mtl_table_f))
+                            # }  
+                            # 
+                            # 
+                            # if(nrow(mtl_table_f)==0  &&  is.element("Population", names(mtl_table_f))) {
+                            #   #mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
+                            #   mtl_table_f <- dplyr::filter(temp_mtl_table, Population %in% search_filter)
+                            #   #row_click <- as.numeric(rownames(mtl_table_f))
+                            # }
+                            # 
+                            # 
+                            # if(nrow(mtl_table_f)==0  &&  is.element("Cycle", names(mtl_table_f))) {
+                            #   
+                            #   mtl_table_f <- dplyr::filter(temp_mtl_table, Cycle %in% search_filter)
+                            #   #row_click <- as.numeric(rownames(mtl_table_f))
+                            # }  
+                            # END SEARCH ACCESSION BY DIFFERENTE PEDRIGREE ATRIBUTES (Temporary disable)   
 
                             if(nrow(mtl_table_f)>0){ 
                               # Row click 
@@ -369,45 +416,49 @@ server_createlist <- function(input,output,session, values){
         mtl_table_f <- dplyr::filter(temp_mtl_table, Accession_Name %in% search_filter)
         #row_click <- as.numeric(rownames(mtl_table_f))
       }
-      
-      if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
+    
+      # SEARCH ACCESSION BY DIFFERENTE PEDRIGREE ATRIBUTES (Temporary disable)
         
-        mtl_table_f <- dplyr::filter(temp_mtl_table, Female_AcceNumb %in% search_filter)
-        #row_click <- as.numeric(rownames(mtl_table_f))
-      } 
+      # if(nrow(mtl_table_f)==0 &&  is.element("Female_AcceNumb",names(mtl_table_f))) {
+      #   
+      #   mtl_table_f <- dplyr::filter(temp_mtl_table, Female_AcceNumb %in% search_filter)
+      #   #row_click <- as.numeric(rownames(mtl_table_f))
+      # } 
+      # 
+      # if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
+      #   
+      #   mtl_table_f <- dplyr::filter(temp_mtl_table, Female_codename %in% search_filter)
+      #   #row_click <- as.numeric(rownames(mtl_table_f))
+      # }  
+      # 
+      # if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb", names(mtl_table_f))) {
+      #   
+      #   mtl_table_f <- dplyr::filter(temp_mtl_table, Male_AcceNumb %in% search_filter)
+      #   #row_click <- as.numeric(rownames(mtl_table_f))
+      # }    
+      # 
+      # if(nrow(mtl_table_f)==0 &&  is.element("Male_codename", names(mtl_table_f))) {
+      #   
+      #   mtl_table_f <- dplyr::filter(temp_mtl_table, Male_codename %in% search_filter)
+      #   #row_click <- as.numeric(rownames(mtl_table_f))
+      # }  
+      # 
+      # 
+      # if(nrow(mtl_table_f)==0  &&  is.element("Population", names(mtl_table_f))) {
+      #   #mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
+      #   mtl_table_f <- dplyr::filter(temp_mtl_table, Population %in% search_filter)
+      #   #row_click <- as.numeric(rownames(mtl_table_f))
+      # }
+      # 
+      # 
+      # if(nrow(mtl_table_f)==0  &&  is.element("Cycle", names(mtl_table_f))) {
+      #   
+      #   mtl_table_f <- dplyr::filter(temp_mtl_table, Cycle %in% search_filter)
+      #   #row_click <- as.numeric(rownames(mtl_table_f))
+      # }
       
-      if(nrow(mtl_table_f)==0 &&  is.element("Female_codename",names(mtl_table_f))) {
-        
-        mtl_table_f <- dplyr::filter(temp_mtl_table, Female_codename %in% search_filter)
-        #row_click <- as.numeric(rownames(mtl_table_f))
-      }  
+      ###   # END SEARCH ACCESSION BY DIFFERENTE PEDRIGREE ATRIBUTES (Temporary disable)
       
-      if(nrow(mtl_table_f)==0 &&  is.element("Male_AcceNumb", names(mtl_table_f))) {
-        
-        mtl_table_f <- dplyr::filter(temp_mtl_table, Male_AcceNumb %in% search_filter)
-        #row_click <- as.numeric(rownames(mtl_table_f))
-      }    
-      
-      if(nrow(mtl_table_f)==0 &&  is.element("Male_codename", names(mtl_table_f))) {
-        
-        mtl_table_f <- dplyr::filter(temp_mtl_table, Male_codename %in% search_filter)
-        #row_click <- as.numeric(rownames(mtl_table_f))
-      }  
-      
-      
-      if(nrow(mtl_table_f)==0  &&  is.element("Population", names(mtl_table_f))) {
-        #mtl_table_f <- dplyr::filter(mtl_table, Population %in% search_filter)
-        mtl_table_f <- dplyr::filter(temp_mtl_table, Population %in% search_filter)
-        #row_click <- as.numeric(rownames(mtl_table_f))
-      }
-      
-      
-      if(nrow(mtl_table_f)==0  &&  is.element("Cycle", names(mtl_table_f))) {
-        
-        mtl_table_f <- dplyr::filter(temp_mtl_table, Cycle %in% search_filter)
-        #row_click <- as.numeric(rownames(mtl_table_f))
-      }  
-
       if(nrow(mtl_table_f)>0){ 
         # Row click 
         row_click <- as.numeric(mtl_table_f$IDX)
@@ -464,8 +515,10 @@ server_createlist <- function(input,output,session, values){
     
     crop <- input$fbmlist_sel_crop_new
     
-    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","fam",fbmlist_name_dbf,sep = "_")}
-    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","fam",fbmlist_name_dbf,sep = "_")} 
+    #if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","fam",fbmlist_name_dbf,sep = "_")}
+    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","clone", fbmlist_name_dbf, sep = "_")} #clone list based on Family List 
+    #if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","fam",fbmlist_name_dbf,sep = "_")} 
+    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","clone", fbmlist_name_dbf, sep = "_")} #clone list based on Family List
     
     fbmlist_name_dbf <- fbmlist_name_dbf
      
@@ -592,16 +645,25 @@ server_createlist <- function(input,output,session, values){
       
       
       print("new list tabla")
-      print(head(new_list_tbl))
-      print("new")
+      # print(head(new_list_tbl))
+      # print("new")
       
       orden <- headers_new_list() #from utils.R
-      print("orden")
-      print(orden)
+      # print("orden")
+      # print(orden)
       
       #saveRDS(new_list_tbl,"new_list_tbl1.rds")
       
       new_list_tbl <- new_list_tbl[,orden]
+      
+      if(input$new_type_trial=="Normal"){ #normal columns by default
+        new_list_tbl <-new_list_tbl
+      } else { #remove columns Is_Control, "Scale_Audpc"
+        new_list_tbl <- dplyr::select(new_list_tbl, -Is_control, -Scale_audpc)
+        new_list_tbl <- as.data.frame(new_list_tbl)
+      }
+      
+      new_list_tbl <- new_list_tbl
       
       #saveRDS(intermediate_mlist_db,file = fbmlist_name_dbf)
       
