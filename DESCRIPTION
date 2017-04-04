@@ -1,6 +1,6 @@
 Package: fbmlist
 Title: The Germoplam Manager for HiDAP
-Version: 2.0.4
+Version: 2.0.5
 Authors@R: person("Omar Benites", "Omar", email = "obacc07@gmail.com", role = c("aut", "cre"))
 Description: The fbmlist package provides a material list manager to create and generate germoplasm list.
 Depends:
