@@ -616,7 +616,7 @@ server_createlist <- function(input,output,session, values){
       names(new_list_tbl)[9] <- "Accession_Number"
       
       
-      print("new list tabla")
+      #print("new list tabla")
       # print(head(new_list_tbl))
       # print("new")
       
