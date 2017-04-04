@@ -78,7 +78,8 @@
       files <- c("sweetpotato_pedigree.rds", "potato_pedigree.rds",
                  "dssweettrials_dpassport.rds", "dspotatotrials_dpassport.rds")
       fp <- paste0("https://github.com/c5sire/drat/blob/gh-pages/inst/db/", files)
-      for(i in 1:length(fp)) download.file(fp[i], path)
+      out <- file.path(path, files)
+      for(i in 1:length(fp)) download.file(fp[i], out[i])
     }
     
 }
