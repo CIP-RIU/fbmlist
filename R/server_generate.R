@@ -11,39 +11,21 @@ server_generate <- function(input,output,session, values){
   
   
    gmtl_data <- eventReactive(input$fbmlist_connect, {
-    
-    #stype <- length(input$fbmlist_sel_type)
-    #print(length(input$fbmlist_connect))
     dbf_file <- input$fbmlist_sel_list
    
     n <- length(input$fbmlist_sel_list)
-    
-    #print(dbf_file)
-    #dbf_sel <- input$fbmlist_sel_type
-    #if(is.null(dbf_file) && is.null(dbf_sel)){ return(NULL) }
     if(n==1){
-        
-        
-        #path <- Sys.getenv("LOCALAPPDATA")
         path <- fbglobal::get_base_dir()
-        path <- paste(path,dbf_file,sep = "\\")
-       
-        print(path)
-        #print(path)
-        #germlist_db <- readRDS(dbf_file)
+        path <- file.path(path, dbf_file)
         germlist_db <- readRDS(path)
-        
-        
     }
-    #germlist_db <- foreign::read.dbf(file = dbf_file, as.is = TRUE)
     if(n > 1){
       combine <- list() 
         for(i in 1:n){  
           
           path <- fbglobal::get_base_dir()
-          path <- paste(path,dbf_file,sep = "\\")
-          combine[[i]] <- readRDS(path = dbf_file[i])
-          #combine[[i]] <- readRDS(file = dbf_file[i]) 
+          path <- file.path(path, dbf_file)
+          combine[[i]] <- readRDS(file = dbf_file[i])
         } 
       join_books <- data.table::rbindlist(combine,fill = TRUE)
       join_books <- as.data.frame(join_books)
@@ -66,15 +48,9 @@ server_generate <- function(input,output,session, values){
    })
    
    outputOptions(output, 'show_mtable', suspendWhenHidden=FALSE)
-   #outputOptions(output, 'show_save', suspendWhenHidden=FALSE)
-   
+
   
   output$sel_list_on_btn <- renderUI({
-    #mtl_files()
-    #db_files_choices <- mtl_files()
-    #db_files_choices <- db_files_choices$short_name
-    
-    #db_files_choices <- list("dspotatotrials_dpassport.dbf", "dssweettrials_dpassport.dbf" ,"potato_pedigree.dbf" ,"sweetpotato_pedigree.dbf")
     crop <- input$fbmlist_sel_crop
     type_db <- input$fbmlist_sel_type
     mtl_db_sel <- mtl_files()$short_name
@@ -525,7 +501,7 @@ server_generate <- function(input,output,session, values){
       
       ## using fbglobal
       path <- fbglobal::get_base_dir()
-      path <- paste(path,  fbmlist_name_dbf, sep="\\")
+      path <- file.path(path,  fbmlist_name_dbf)
       
       saveRDS(gen_list_tbl, file = path)
        

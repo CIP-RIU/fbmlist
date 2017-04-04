@@ -27,17 +27,7 @@ server_managerlist <- function(input,output,session, values){
   
   mtl_files_react <- eventReactive(input$fbmlist_refresh,{   
     
-    #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".dbf|.rds")
-    
-    
-    #before fbglobal
-    #dbf_file_list <- list.files(getwd(), full.names = TRUE, pattern = ".rds")
-    
-    #after fbglobal
-    #path <- fbglobal::get_base_dir()
-    #path <- Sys.getenv("LOCALAPPDATA")
     path <- fbglobal::get_base_dir()
-    print(path)
     
     dbf_file_list <- list.files(path, full.names = TRUE, pattern = ".rds")
     
@@ -53,7 +43,7 @@ server_managerlist <- function(input,output,session, values){
       names(gmtfiles) <- c("short_name","full_name")
       
       out_list <- c("dspotatotrials_dpassport.rds", "dssweettrials_dpassport.rds", "potato_pedigree.rds", "sweetpotato_pedigree.rds")
-      gmtfiles <- dplyr::filter(.data = gmtfiles, !(short_name %in% out_list))
+      gmtfiles <- dplyr::filter(.data = gmtfiles, (short_name %in% out_list))
 
       gmtfiles
     }
