@@ -82,7 +82,7 @@
        #          )
       files <- c("sweetpotato_pedigree.rds", "potato_pedigree.rds",
                  "dssweettrials_dpassport.rds", "dspotatotrials_dpassport.rds")
-      fp <- paste0("https://github.com/c5sire/fbmlist/blob/master/inst/db/", files)
+      fp <- paste0("https://research.cip.cgiar.org/confluence/download/attachments/85165212/", files)
       out <- file.path(path, files)
       for(i in 1:length(fp)) curl::curl_download(fp[i], out[i], mode = "wb")
     }
