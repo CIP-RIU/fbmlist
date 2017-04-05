@@ -75,16 +75,16 @@
     dbDisconnect(con)
     #foreign::write.dbf(mtl_data, "mlist_biomart.dbf") 
     } else {
-      # dropb <- c("https://www.dropbox.com/s/h3hu08bj3bxehwn/",
-      #            "https://www.dropbox.com/s/18zioe9bw3ra0fq/",
-      #            "https://www.dropbox.com/s/ru9aqly8huulf9j/",
-      #             "https://www.dropbox.com/s/9fb2a0qzjmflj47/"
-       #          )
-      files <- c("sweetpotato_pedigree.rds", "potato_pedigree.rds",
-                 "dssweettrials_dpassport.rds", "dspotatotrials_dpassport.rds")
-      fp <- paste0("https://research.cip.cgiar.org/confluence/download/attachments/85165212/", files)
-      out <- file.path(path, files)
-      for(i in 1:length(fp)) curl::curl_download(fp[i], out[i], mode = "wb")
+     
+      db <- "http://c5sire.github.io/hdata/db.zip"
+      td <- tempdir()
+      
+      fp <- file.path(td, "db.zip")
+      download.file(db, fp)
+
+      od <- fbglobal::get_base_dir()
+      unzip(fp, exdir = od, overwrite = TRUE)
+      unlink(fp)
     }
     
 }
