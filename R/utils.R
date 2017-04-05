@@ -75,11 +75,16 @@
     dbDisconnect(con)
     #foreign::write.dbf(mtl_data, "mlist_biomart.dbf") 
     } else {
+      dropb <- c("https://www.dropbox.com/s/h3hu08bj3bxehwn/",
+                 "https://www.dropbox.com/s/18zioe9bw3ra0fq/",
+                 "https://www.dropbox.com/s/ru9aqly8huulf9j/",
+                  "https://www.dropbox.com/s/9fb2a0qzjmflj47/"
+                 )
       files <- c("sweetpotato_pedigree.rds", "potato_pedigree.rds",
                  "dssweettrials_dpassport.rds", "dspotatotrials_dpassport.rds")
-      fp <- paste0("https://github.com/c5sire/drat/blob/gh-pages/inst/db/", files)
+      fp <- paste0(dropb, files, "?dl=0")
       out <- file.path(path, files)
-      for(i in 1:length(fp)) download.file(fp[i], out[i])
+      for(i in 1:length(fp)) curl::curl_download(fp[i], out[i], mode = "wb")
     }
     
 }
