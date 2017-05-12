@@ -81,7 +81,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                 div(dataTableOutput("fbmlist_table_new"), style = "font-size:85%"),
                                                 #DT::dataTableOutput('fbmlist_table'),
                                                 br(),
-                                                actionButton("fbmlist_select_new", "Select marks", icon("fa fa-arrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150),
+                                                actionButton("fbmlist_select_new", "Select marked", icon("fa fa-arrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150),
                                                 br(),
                                                 br(),
                                                 br()
@@ -109,7 +109,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                 uiOutput("continent_new_name"),
                                                 uiOutput("country_new_name"),
                                                 uiOutput("breedercode_new_name"),
-                                                shiny::selectInput(inputId = "new_type_trial",label = "Type of trial", c("Normal","PVS"), selected = 1),
+                                                shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1),
                                                 br()
                                               ),
                                               

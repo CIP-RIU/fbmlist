@@ -137,7 +137,6 @@ server_generate <- function(input,output,session, values){
     shinysky::actionButton2("fbmlist_save", label = "Save list", icon = "save", icon.library = "bootstrap")
   })
 
-
   output$fbmlist_foundclones_gen <- renderText({
     
     mtl_table <- gmtl_data()
@@ -181,10 +180,7 @@ server_generate <- function(input,output,session, values){
     
   })
   
-  
-  
-  
-  
+
   # Selection on generataed material list button ----------------------------------------------------
   output$fbmlist_table  <-  DT::renderDataTable({
     
@@ -285,17 +281,17 @@ server_generate <- function(input,output,session, values){
                           DT::datatable( mtl_table_f, rownames = FALSE, 
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
                                           selection = list( mode = "multiple", selected = Search), 
-                                          filter = 'bottom',
-                                          extensions = 'Buttons', options = list(
-                                            dom = 'Bfrtip',
-                                            buttons = 
-                                              list(list(
-                                                extend = 'collection',
-                                                buttons = c('csv', 'excel'),
-                                                text = 'Download'
-                                              ))
-                                            
-                                          )
+                                          filter = 'bottom'#,
+                                          # extensions = 'Buttons', options = list(
+                                          #   dom = 'Bfrtip',
+                                          #   buttons = 
+                                          #     list(list(
+                                          #       extend = 'collection',
+                                          #       buttons = c('csv', 'excel'),
+                                          #       text = 'Download'
+                                          #     ))
+                                          #   
+                                          # )
                             )
 
                           } else {
@@ -303,17 +299,17 @@ server_generate <- function(input,output,session, values){
                           DT::datatable(mtl_table, rownames = FALSE,
                                         #selection = list( mode= "multiple",  selected =  rownames(mtl_table)),
                                         selection = list( mode = "multiple"),
-                                                   filter = 'bottom',
-                                                   extensions = 'Buttons', options = list(
-                                                    dom = 'Bfrtip',
-                                                    buttons =
-                                                      list(list(
-                                                        extend = 'collection',
-                                                        buttons = c('csv', 'excel'),
-                                                        text = 'Download'
-                                                      ))
-
-                                                  )
+                                                   filter = 'bottom'#,
+                                                  #  extensions = 'Buttons', options = list(
+                                                  #   dom = 'Bfrtip',
+                                                  #   buttons =
+                                                  #     list(list(
+                                                  #       extend = 'collection',
+                                                  #       buttons = c('csv', 'excel'),
+                                                  #       text = 'Download'
+                                                  #     ))
+                                                  # 
+                                                  # )
                                         )
 
                           }
@@ -496,7 +492,7 @@ server_generate <- function(input,output,session, values){
                                   Family_AcceNumb = NA,
                                   Cycle	 = NA,
                                   Seed_source = NA,	
-                                  Simultanious_trials = NA,
+                                  Simultaneous_trials = NA,
                                   list_name= fbmlist_name_dbf,
                                   Previous_trials = NA,
                                   Date_Created = format(Sys.Date(), "%d %m %Y")
@@ -509,7 +505,7 @@ server_generate <- function(input,output,session, values){
       gen_list_tbl <- gen_list_tbl
       
       
-      if(input$gen_type_trial=="Normal"){ #normal columns by default
+      if(input$gen_type_trial=="Standard"){ #normal columns by default
         gen_list_tbl <- gen_list_tbl
       } else { #remove columns Is_Control, "Scale_Audpc"
         gen_list_tbl <- dplyr::select(gen_list_tbl, -Is_control, -Scale_audpc)
