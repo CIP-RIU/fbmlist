@@ -82,7 +82,38 @@
     dbDisconnect(con)
     #foreign::write.dbf(mtl_data, "mlist_biomart.dbf") 
     
+    # Distribution DataBase ---------------------------------------------------
+    
+    m <- dbDriver("MySQL");
+    con <- dbConnect(m,user='distribution',password='cveB3FAaY3JsJ0517',host='176.34.248.121',dbname='datacippotato_martpot_trials');
+    res <- dbSendQuery(con, "SELECT 
+                              datacippotato_martpot_trials.dspotatotrials__dpassport__main.CIPNUMBER_key,
+                              datacippotato_martpot_trials.dspotatotrials__dpassport__main.MALE,
+                              datacippotato_martpot_trials.dspotatotrials__dpassport__main.FEMALE,
+                              datacippotato_martpot_trials.dspotatotrials__dpassport__main.Distribution_Status,  
+                              datacippotato_martpot_trials.dspotatotrials__dpassport__main.Health_Status,
+                              datacippotato_martpot_trials.dspotatotrials__dpassport__main.STORA,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistApplNumb,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistApplNumbYear,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.Request,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistItemForm,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.Distitemspecieid,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistConsName,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistConsInst,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistConsCoun,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.modStateId,
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.DistributionData
+                              FROM datacippotato_martpot_trials.dspotatotrials__distribution__dm INNER JOIN datacippotato_martpot_trials.dspotatotrials__dpassport__main ON
+                              datacippotato_martpot_trials.dspotatotrials__distribution__dm.CIPNUMBER_key = datacippotato_martpot_trials.dspotatotrials__dpassport__main.CIPNUMBER_key")
+    
+    potato_db_distribution <- fetch(res, n = -1)
+    path <- fbglobal::get_base_dir()
+    path_file <- file.path(path, "potato_db_distribution.rds")
+    saveRDS(potato_db_distribution, file = path_file)
+    dbDisconnect(con)
 }
+
+
 
 
 #' List of the dbf files
@@ -145,7 +176,9 @@
   
 #' Accession Name Creation
 #' @describeIn Creation of accession names according to the number of repetitions
-#'
+#' @param accession_name the accession's name
+#' @param accesssion_number the accession's number
+#' @param nrep number of repetitions
        
   accessname_code <- function(accession_name, accession_number, nrep){
      

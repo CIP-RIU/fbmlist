@@ -14,9 +14,11 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
   shinydashboard::tabItem(tabName = name, # begin data_processing tabItem
                           h2(title),   
   
-                          shinyjs::useShinyjs(),
-                          shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"),
-                          
+                          shinyjs::useShinyjs(), #refresh functions
+                          shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"), #refresh functions
+ 
+##### Begin Select Buttons: crop, database list and Connect ####
+
                           fluidRow( #Buttons for database connection
                             box(
                               title = " ", width = 12, status = "primary", height = "250px",
@@ -31,7 +33,7 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                          )#,
                                 ),
                                 
-                                column(6, selectizeInput("fbmlist_sel_type_parent", "Select database", width="100%", selected = 2,
+                               column(6, selectizeInput("fbmlist_sel_type_parent", "Select database", width="100%", selected = 2,
                                                          choices = c("Institutional","Local")))
                               ),
                               
@@ -46,11 +48,20 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                             )#,
                             
                           ) , #End of #Buttons for database connection
+#### End Select Buttons: crop, database list and Connect
                           
+                              
+                          
+
+#### Begin conditional Panel  input.fbmlist_sel_type_parent=='Institutional' #####
+    conditionalPanel( condition = "input.fbmlist_sel_type_parent=='Institutional'",                          
+
+                      
 # Conditional Panel for search and selection of parentals  ---------------------------------
-                          
-                          conditionalPanel( condition = "output.show_mtable_parent",  ##conditional Panel
-                                            
+
+
+                      #conditionalPanel( condition = "input.fbmlist_sel_type_parent=='Institutional'",
+                        conditionalPanel( condition = "output.show_mtable_parent",  ##conditional Panel
                                             fluidRow(
                                               box(
                                                 #"Ingrese una lista de familias o clones", width = 4, status = "primary", height = "730px",
@@ -140,11 +151,8 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                                 h2("Females"),
                                                 DT::dataTableOutput('fbmlist_choosen_table_parent_fem'),
                                                 
-                                                
                                                 h2("Males"),
                                                 DT::dataTableOutput('fbmlist_choosen_table_parent_male'),
-                                                
-                                                
                                                 
                                                 #actionButton("plot1_dl", "Save list", icon("fa fa-floppy-o"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150)
                                                 uiOutput("savelist_parent_btn"),
@@ -161,7 +169,41 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                             br()#,
                                             
                           )#,
-                        ),#end div
+                        )#,#end div
+
+
+), #End conditional Panel  input.fbmlist_sel_type_parent=='Institutional'
+
+
+###### Begin sel_type_parent == local ##############
+conditionalPanel( condition = "input.fbmlist_sel_type_parent=='Local'",                          
+                  
+                  fluidRow(
+                    box(
+                      
+                      title = "Parent Table", width = 12, status = "success", solidHeader = TRUE, collapsible = TRUE,
+                      br(),
+                      br(),
+                      #Display table when user select "Local" database
+                      dataTableOutput("fbmlist_table_parent_local")
+                      ),
+                  box(width = 12, 
+                      fluidRow(
+                        box(
+                          title = "Female Parent Information", width = 6, status = "success", solidHeader = TRUE, collapsible = TRUE,
+                          dataTableOutput("fbmlist_table_female_local")
+                          ),
+                        box(
+                          title = "Male Parent Information", width = 6, status = "success", solidHeader = TRUE, collapsible = TRUE,
+                          dataTableOutput("fbmlist_table_male_local")
+                          )
+                      )
+                  )
+                  )
+
+),
+#######End sel_type_parent == "local" #
+
                         br(),
                         br(),
                         br()        
@@ -170,6 +212,7 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
   )
   
  
+
   
-   
+  
 }

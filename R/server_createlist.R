@@ -355,6 +355,7 @@ server_createlist <- function(input,output,session, values){
                             #DT::datatable(mtl_table, rownames = FALSE, 
                             #DT::datatable(temp_mtl_table, rownames = FALSE,  ##temp_mtl_table is the all table
                             DT::datatable(mtl_table_f, rownames = FALSE,      ##filtered table
+                                          options = list(scrollX = TRUE, scroller = TRUE),
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
                                           selection = list( mode = "multiple", selected = N), 
                                           filter = 'bottom'#,
@@ -374,6 +375,7 @@ server_createlist <- function(input,output,session, values){
    
                           #DT::datatable(mtl_table, rownames = FALSE, 
                             DT::datatable(temp_mtl_table, rownames = FALSE,
+                                          options = list(scrollX = TRUE, scroller = TRUE),
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
                                           selection = list( mode = "multiple"), 
                                           filter = 'bottom'#,
@@ -394,7 +396,7 @@ server_createlist <- function(input,output,session, values){
                           
                         }) #end of Progress
     
-  })
+  } )
   
   #Row selected by User  ----------------------------------------------------
   gmtl_row_index_new <- eventReactive(input$fbmlist_select_new,{

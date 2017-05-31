@@ -9,7 +9,7 @@
 
 server_parentlist <- function(input,output,session, values){
   
-
+  #Reactive data after local lists or database connection.
   gmtl_data <- eventReactive(input$fbmlist_connect_parent, {
     
     #stype <- length(input$fbmlist_sel_type)
@@ -17,6 +17,9 @@ server_parentlist <- function(input,output,session, values){
     dbf_file <- input$fbmlist_sel_list_parent
     
     n <- length(input$fbmlist_sel_list_parent)
+ 
+    
+    if(input$fbmlist_sel_type_parent=="Institutional"){
     
     #print(dbf_file)
     #dbf_sel <- input$fbmlist_sel_type
@@ -26,13 +29,16 @@ server_parentlist <- function(input,output,session, values){
       
       #path <- Sys.getenv("LOCALAPPDATA")
       path <- fbglobal::get_base_dir()
-      path <- paste(path,dbf_file,sep = "\\")
+      path <- paste(path, dbf_file,sep = "\\")
       
-      print(path)
       #print(path)
+      print(path)
       #germlist_db <- readRDS(dbf_file)
       germlist_db <- readRDS(path)
       
+      # if(stringr::str_detect(path, "parent")){
+      #   germlist_db <- germlist_db$parental_table
+      # }
       
     }
     #germlist_db <- foreign::read.dbf(file = dbf_file, as.is = TRUE)
@@ -42,33 +48,52 @@ server_parentlist <- function(input,output,session, values){
         
         path <- fbglobal::get_base_dir()
         path <- paste(path,dbf_file,sep = "\\")
-        combine[[i]] <- readRDS(path = dbf_file[i])
+        combine[[i]] <- readRDS(file = dbf_file[i])
         #combine[[i]] <- readRDS(file = dbf_file[i]) 
       } 
       join_books <- data.table::rbindlist(combine,fill = TRUE)
       join_books <- as.data.frame(join_books)
       germlist_db <- join_books
     }
+      
+      n_row <- nrow(germlist_db)
+      #germlist_db <-  mutate(IDX = 1:n_row, germlist_db)
+      germlist_db <-  cbind(IDX = 1:n_row, germlist_db)
+      
+      
+    }
+    if(input$fbmlist_sel_type_parent=="Local"){
+      
+      path <- fbglobal::get_base_dir()
+      path <- paste(path, dbf_file,sep = "\\")
+      print(path)
+      germlist_db <- readRDS(path)
+      
+      if(stringr::str_detect(path, "parent")){
+        germlist_db <- germlist_db
+      }
+      
+    }
     
-    n_row <- nrow(germlist_db)
-    germlist_db <-  mutate(germlist_db, IDX = 1:n_row)
     
     germlist_db
     
   }) 
 
+  #Reactive data for parents 
   output$show_mtable_parent <- reactive({
     return(!is.null(gmtl_data()))
   })
 
+  #Reactive values. It works in conditionalPanels to show the table after pressing 'connect'
   output$show_save_parent <- reactive({
     return(length(input$fbmlist_select_parent[1]))
   }) #podria ser retirado
   
-  
+  #setting options
   outputOptions(output, 'show_mtable_parent', suspendWhenHidden=FALSE)
   
-  
+  #selectInput button for local lists and databases
   output$sel_list_parent_btn <- renderUI({
     #mtl_files()
     #db_files_choices <- mtl_files()
@@ -116,7 +141,7 @@ server_parentlist <- function(input,output,session, values){
     db_files_choices <- db_files_choices
     
     shiny::selectizeInput(inputId ="fbmlist_sel_list_parent", label = "Select list", 
-                          multiple =  sel_multiple, width="100%", choices = db_files_choices,
+                          multiple =  FALSE, width="100%", choices = db_files_choices,
                           options = list(
                             placeholder = 'Please select an option below',
                             onInitialize = I('function() { this.setValue(""); }')
@@ -124,14 +149,14 @@ server_parentlist <- function(input,output,session, values){
     )
   })
   
-  
+  # Parent list's name
   output$create_parent_name <- renderUI({
     
     req(input$fbmlist_select_parent)
     textInput("fbmlist_create_parent_name", label = h3("New list name"), value = "", placeholder = "Write a list name")
   })
   
-  
+  # Render ui Button for saveing local lists
   output$savelist_parent_btn <- renderUI({
     
     req(input$fbmlist_select_parent)
@@ -139,13 +164,99 @@ server_parentlist <- function(input,output,session, values){
     shinysky::actionButton2("fbmlist_save_parent", label = "Save list", icon = "save", icon.library = "bootstrap")
   })
   
-
   
- 
+  # Local DataTable (DT) ----------------------------------------------------
+  
+  #This table serves only for local list created by users. It's for select parents (binding of females and males)
+  output$fbmlist_table_parent_local  <- DT::renderDataTable({
+    
+    
+    #shiny::req(input$fbmlist_sel_list_parent)
+    #shiny::req(input$fbmlist_connect_parent)
+    germlist_db <- gmtl_data()
+    print(gmtl_data())
+    germlist_parent_db <- germlist_db$parental_table
+    
+    req(input$fbmlist_sel_type_parent)
+    
+    if(input$fbmlist_sel_type_parent=="Local" ){
+    
+      
+      mtl_table <- germlist_parent_db
+      print("1")
+      print(mtl_table)
+      mtl_table
+      
+    } else {
+      
+      mtl_table <- data.frame() 
+      print("2")
+      print(mtl_table)
+      mtl_table
+    }
+    
+    mtl_table <- mtl_table
+    
+  }, options = list(searching = FALSE, pageLength = 5, scrollY = 200, scrollX = TRUE, scroller = TRUE),  rownames= TRUE,  selection = 'none' )
+  
+  #This table serves only for local list created by users. It's for select female
+  output$fbmlist_table_female_local  <- DT::renderDataTable({
+    
+    req(input$fbmlist_sel_type_parent)
+    germlist_db <- gmtl_data()
+    germlist_female_local_db <- germlist_db$female
+    
+    if(input$fbmlist_sel_type_parent=="Local" ){
+      
+      mtl_table <- germlist_female_local_db
+      mtl_table
+      
+    } else {
+      
+      mtl_table <- data.frame() 
+      mtl_table
+    }
+    
+    mtl_table <- mtl_table
+    
+  }, options = list(searching = FALSE, pageLength = 5, scrollY = 200, scrollX = TRUE, scroller = TRUE),  rownames= FALSE,  selection = 'none' )
+  
+  #This table serves only for local list created by users. It's for select male
+  output$fbmlist_table_male_local  <-   DT::renderDataTable({
+    
+    germlist_db <- gmtl_data()
+    germlist_male_local_db <- germlist_db$male
+
+    req(input$fbmlist_sel_type_parent)
+    
+    if(input$fbmlist_sel_type_parent=="Local" ){
+      
+      
+      mtl_table <- germlist_male_local_db
+      # print("1")
+      # print(mtl_table)
+      mtl_table
+      
+    } else {
+      
+      mtl_table <- data.frame() 
+      print("2")
+      print(mtl_table)
+      mtl_table
+    }
+    
+    mtl_table <- mtl_table
+    
+  }, options = list(searching = FALSE, pageLength = 5, scrollY = 200, scrollX = TRUE, scroller = TRUE),  rownames= FALSE,  selection = 'none' )
+  
+  # End local DataTable (DT) --
+  
+  
   # New ---------------------------------------------------------------------
   
   # Female ------------------------------------------------------------------
   
+  #Entire table for female genotypes. In this table we select the female accessions.
   output$fbmlist_table_parent_fem  <-  DT::renderDataTable({
     
     
@@ -260,10 +371,10 @@ server_parentlist <- function(input,output,session, values){
                           
                         }) #end of Progress
     
-  })
+  }, options = list(scrollX = TRUE, scroller = TRUE))
   
   
-  
+  #textarea input for females
   output$fbmlist_foundclones_parent_fem <- renderText({
     
     mtl_table <- gmtl_data()
@@ -308,7 +419,7 @@ server_parentlist <- function(input,output,session, values){
   })
   
   
-  
+  #indeces for selected females
   gmtl_row_index_fem <- eventReactive(input$fbmlist_select_parent,{
     
     row_click <- NULL
@@ -415,10 +526,11 @@ server_parentlist <- function(input,output,session, values){
   
   
   
-  
+  #Table of selected female genotypes
   output$fbmlist_choosen_table_parent_fem  <- DT::renderDataTable({
     
     #print(input$foo)
+    
     
     index <- gmtl_row_index_fem()
     mtl_table <- gmtl_data()
@@ -427,13 +539,15 @@ server_parentlist <- function(input,output,session, values){
     chosen_gmtl_table <-  mtl_table_temp[index, ]
     chosen_gmtl_table 
     
-  }, options = list(searching = FALSE, pageLength = 5) )
+  }, 
+                                                                  options = list(searching = FALSE, pageLength = 5, scrollX = TRUE, scroller = TRUE), rownames= FALSE, selection = 'none' )
   
-  
+  # End Female ---------------------------------------------------------------
   
   
   # Male ---------------------------------------------------------------
   
+  #Entire table for male genotypes. In this table we select the male accessions.
   output$fbmlist_table_parent_male  <-  DT::renderDataTable({
     
     
@@ -548,10 +662,11 @@ server_parentlist <- function(input,output,session, values){
                           
                         }) #end of Progress
     
-  })
+  }, options = list(scrollX = TRUE, scroller = TRUE))
   
   
   
+  #textarea input for males
   output$fbmlist_foundclones_parent_male <- renderText({
     
     mtl_table <- gmtl_data()
@@ -597,6 +712,7 @@ server_parentlist <- function(input,output,session, values){
   
   
   
+  #indeces for selected males
   gmtl_row_index_male <- eventReactive(input$fbmlist_select_parent,{
     
     row_click <- NULL
@@ -703,6 +819,7 @@ server_parentlist <- function(input,output,session, values){
   
   
   
+  #Table of selected males genotypes
   output$fbmlist_choosen_table_parent_male  <- DT::renderDataTable({
     
     #print(input$foo)
@@ -714,14 +831,138 @@ server_parentlist <- function(input,output,session, values){
     chosen_gmtl_table <-  mtl_table_temp[index, ]
     chosen_gmtl_table 
     
-  }, options = list(searching = FALSE, pageLength = 5) )
+  }, 
+                                                                    options = list(searching = FALSE, pageLength = 5, scrollX = TRUE, scroller = TRUE), rownames= FALSE, selection = 'none')
+  
+  # End Male ---------------------------------------------------------------
+  
+  
+  #Invalidate save button 
+  observe({
+    toggleState(id = "fbmlist_save_parent", condition =  !is.null(input$fbmlist_create_parent_name) && str_trim(input$fbmlist_create_parent_name, side = "both")!= ""
+         )
+  })
   
   
   
+  #ActionButton
+  shiny::observeEvent(input$fbmlist_save_parent, {
   
-  
-  
-  
+    
+    index_fem <- gmtl_row_index_fem()
+    index_male <- gmtl_row_index_male()
+    
+    mtl_table_parent <- gmtl_data()
+    
+    chosen_gmtl_table_fem <-  mtl_table_parent[index_fem, ]
+    chosen_gmtl_table_male <-  mtl_table_parent[index_male, ]
+    
+    
+    fbmlist_name_dbf_parent  <- str_trim(string = input$fbmlist_create_parent_name, side = "both")
+    fbmlist_name_dbf_parent  <- gsub("\\s+", "_", fbmlist_name_dbf_parent)
+    fbmlist_name_dbf_temp_parent <- fbmlist_name_dbf_parent  #This variable is for control when user do not type empty names
+    
+    #Adding the crop notation 
+    crop <- input$fbmlist_sel_crop_parent
+    if(crop=="potato")      { fbmlist_name_dbf_parent <- paste("PT","parent", fbmlist_name_dbf_parent,sep = "_") }
+    if(crop=="sweetpotato") { fbmlist_name_dbf_parent <- paste("SP","parent", fbmlist_name_dbf_parent,sep = "_") } 
+    #End of crop notation
+    
+    
+    #All the files names
+    db_files_parent  <- file_path_sans_ext(mtl_files()$short_name)
+    #print(db_files_parent)
+    #print(fbmlist_name_dbf_parent)
+    #print(fbmlist_name_dbf_parent %in% db_files_parent)
+    
+    
+    if(fbmlist_name_dbf_parent %in% db_files_parent) {
+      
+      #print("paso1")
+          shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("WARNING: This list already exists"),
+                               styleclass = "warning")
+      
+    } 
+    
+      else if(fbmlist_name_dbf_temp_parent==""){  #use of the temporary variable to control empty names given by users. in line 261
+
+          shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("WARNING: Please Type a Material List Name"),
+                               styleclass = "warning")
+
+    }
+    # 
+      else if(is.null(input$fbmlist_create_parent_name) || str_trim(input$fbmlist_create_parent_name, side = "both")== "" ) {
+
+          shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("WARNING: Please fill the information"),
+                                 styleclass = "warning")
+
+    }
+    # 
+    else if(is.null(index_fem)){
+
+          shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("Warning: Please select FEMALE parentals"),
+                               styleclass = "warning")
+
+    }
+    # 
+     else if(is.null(index_male)){
+     
+           shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("Warning: Please select MALE parentals"),
+                                styleclass = "warning")
+     
+     } else if(is.null(index_fem) && is.null(index_male)){
+     
+           shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("Warning: Please select FEMALE and MALE parentals"),
+                                styleclass = "warning")
+     } 
+    
+     else {
+
+       #db <- list(female = chosen_gmtl_table_fem, male = chosen_gmtl_table_male)
+      
+       nrow_male   <- nrow(chosen_gmtl_table_male)
+       nrow_female <- nrow(chosen_gmtl_table_fem)
+       
+       
+       if(nrow_male>nrow_female){
+
+         n <-  nrow_male-nrow_female
+         vec_na <- rep(NA, n)
+         female_parents <- c(chosen_gmtl_table_fem$Accession_Number, vec_na)
+         parental_table <- data.frame(Female_AcceNumb = female_parents, Male_AcceNumb = chosen_gmtl_table_male$Accession_Number, stringsAsFactors = FALSE)
+         
+         
+       } else if (nrow_female>nrow_male){
+         
+         n <-  nrow_female-nrow_male
+         vec_na <- rep(NA, n)
+         male_parents <- c(chosen_gmtl_table_male$Accession_Number, vec_na)
+         parental_table <- data.frame(Female_AcceNumb = chosen_gmtl_table_fem$Accession_Number, Male_AcceNumb =  male_parents, stringsAsFactors = FALSE)
+         
+       
+       } else {
+         
+         parental_table <- data.frame(Female_AcceNumb = chosen_gmtl_table_fem$Accession_Number, 
+                                         Male_AcceNumb = chosen_gmtl_table_male$Accession_Number, stringsAsFactors = FALSE)
+         
+       }
+       
+      
+           parental_table <- parental_table
+           db_parent <- list(female = chosen_gmtl_table_fem, male = chosen_gmtl_table_male, parental_table = parental_table)
+           
+           path <- fbglobal::get_base_dir()
+           file_parent <- paste(fbmlist_name_dbf_parent,".rds",sep = "")
+           
+           path <- file.path(path, file_parent)
+           saveRDS( db_parent, file = path)
+           
+           shinysky::showshinyalert(session, "alert_fbmlist_parent", paste("Material List successfully created!"), 
+                                     styleclass = "success")
+           print("paso el filtro")
+    }
+    
+  })
   
 }  
 
