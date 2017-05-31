@@ -32,11 +32,17 @@ tabNameS <- "parentalList"
 
 server <- function(input, output, session,values) {
   values = shiny::reactiveValues()
+
+  fbmlist::server_generate(input, output, session, values = values)
+  fbmlist::server_managerlist(input, output, session, values = values)
+  fbmlist::server_createlist(input, output, session, values = values)
+
   #fbmlist::server_generate(input, output, session, values = values)
   #fbmlist::server_managerlist(input, output, session, values = values)
   #fbmlist::server_createlist(input, output, session, values = values)
   fbmlist::server_parentalList(input, output, session, values = values)
   
+
 }
 
 ui <- dashboardPage(skin = "yellow",
@@ -44,18 +50,34 @@ ui <- dashboardPage(skin = "yellow",
                     dashboardSidebar(width = 200,
                                      menuItem("Resources",
                                               sidebarMenu(id = "menu",
-                                                          menuSubItem("Management", icon = icon("star"),
-                                                                      tabName = tabNameS)
-                                                ) 
+                                                menuSubItem("Generate", icon = icon("star"),
+                                                    tabName = "generate"),
+                                                
+                                              menuSubItem("Create", icon = icon("star"),
+                                                          tabName = "create"),
+                                              
+                                              menuSubItem("Manage", icon = icon("star"),
+                                                 tabName = "manage")
+                    
+                                              
                                      )
-                    ),
+                    )),
                     dashboardBody(
                       
                       tabItems(
+
+                        
+                        
+                        fbmlist::generate_ui(name = "generate"),
+                        fbmlist::createlist_ui(name = "create"),
+                        fbmlist::managerlist_ui(name = "manage")
+                        
+
                         #fbmlist::generate_ui(name = tabNameS)#,
                         #fbmlist::createlist_ui(name = tabNameS)
                         #fbmlist::managerlist_ui(name = tabNameS)
                         fbmlist::parental_ui(name = tabNameS)
+
                       )
                     )
 )

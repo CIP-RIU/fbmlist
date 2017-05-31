@@ -17,36 +17,11 @@ server_createlist <- function(input,output,session, values){
     n <- length(input$fbmlist_sel_list_new)
   
     if(n==1){
-      #germlist_db <- readRDS(dbf_file)
       path <- fbglobal::get_base_dir()
-      print(path)
-      path <- paste(path,dbf_file,sep = "\\")
-      
-      
-      #print(path)
-      #germlist_db <- readRDS(dbf_file)
+      path <- file.path(path, dbf_file)
       germlist_db <- readRDS(path)
       
     }
-
-    #------- Code for combining material list
-    # if(n > 1){
-    #   combine <- list() 
-    #   for(i in 1:n){  
-    #     
-    #     path <- fbglobal::get_base_dir()
-    #     path <- paste(path,dbf_file,sep = "\\")
-    #     combine[[i]] <- readRDS(path = dbf_file[i])
-    #     #combine[[i]] <- readRDS(file = dbf_file[i]) 
-    #   } 
-    #   join_books <- data.table::rbindlist(combine,fill = TRUE)
-    #   join_books <- as.data.frame(join_books)
-    #   germlist_db <- join_books
-    # }
-    #--------- End of combining list
-    
-    #germlist_db
-    ### Number of row of germilist_db 
     n_row <- nrow(germlist_db)
     
     germlist_db <-  mutate(germlist_db, IDX = 1:n_row)
@@ -59,10 +34,7 @@ server_createlist <- function(input,output,session, values){
     return(!is.null(gmtl_data_new()))
   })
   
-#   output$show_save <- reactive({
-#     return(length(input$fbmlist_select_new[1]))
-#   })
-  
+
   outputOptions(output, 'show_mtable_new', suspendWhenHidden=FALSE)
   #outputOptions(output, 'show_save', suspendWhenHidden=FALSE)
   
@@ -662,7 +634,7 @@ server_createlist <- function(input,output,session, values){
       names(new_list_tbl)[9] <- "Accession_Number"
       
       
-      print("new list tabla")
+      #print("new list tabla")
       # print(head(new_list_tbl))
       # print("new")
       
@@ -687,7 +659,7 @@ server_createlist <- function(input,output,session, values){
       
       #using fbglobal
       path <- fbglobal::get_base_dir()
-      path <- paste(path,  fbmlist_name_dbf, sep="\\")
+      path <- file.path(path,  fbmlist_name_dbf)
       saveRDS(new_list_tbl, file = path)
       
       

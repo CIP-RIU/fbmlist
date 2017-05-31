@@ -4,12 +4,13 @@
 #' 
   fbmlist_data <- function(){
   
-#     mtl_drv <- dbDriver("MySQL");
-#     mtl_con<-dbConnect(mtl_drv, user='cipmateriallist',password='c$?ZYmra2KgJvmH0616',host='176.34.248.121',dbname='cipmateriallist');
-#     mtl_query <- dbSendQuery(mtl_con, "select * from materiallist")
-#     mtl_data <- fetch(mtl_query, n = -1)
+    locos <- Sys.info()["sysname"][[1]]
     
     path <- fbglobal::get_base_dir()
+    
+    if(locos == "Windows") {
+    
+    
    
     m <- dbDriver("MySQL");
     con <- dbConnect(m,user='dspotatotrials',password='ca7H=j~$V+p2G0715',host='176.34.248.121',dbname='datacippotato_martpot_trials');
@@ -21,7 +22,7 @@
     #path <- fbglobal::get_base_dir()
     #path <- Sys.getenv("LOCALAPPDATA")
     #print("path")
-    path_file <- paste(path, "dspotatotrials_dpassport.rds", sep = "\\")
+    path_file <- file.path(path, "dspotatotrials_dpassport.rds")
     
     saveRDS(dspotatotrials_dpassport, file = path_file)
     #saveRDS(dspotatotrials_dpassport,file = "dspotatotrials_dpassport.rds")
@@ -36,7 +37,7 @@
     #write.dbf(dssweettrials_dpassport,"dssweettrials_dpassport.dbf")
     #path <- fbglobal::get_base_dir()
     #path_file <- paste(path, "dssweettrials_dpassport.rds", sep = "\\")
-    path_file <- paste(path, "dssweettrials_dpassport.rds", sep = "\\")
+    path_file <- file.path(path, "dssweettrials_dpassport.rds")
    
     saveRDS(dssweettrials_dpassport,file =  path_file)
     #saveRDS(dssweettrials_dpassport,file = "dssweettrials_dpassport.rds")
@@ -51,36 +52,40 @@
     #write.dbf(potato_pedigree,"potato_pedigree.dbf")
     
     #path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "potato_pedigree.rds", sep = "\\")
+    path_file <- file.path(path, "potato_pedigree.rds")
     
     #saveRDS(potato_pedigree,file = "potato_pedigree.rds")
     saveRDS(potato_pedigree, file =  path_file)
     
     
     dbDisconnect(con)
-    
-#     m <- dbDriver("MySQL");
-#     con <- dbConnect(m,user='cippedigree',password='cF6Jr<tVW]dU60713',host='176.34.248.121',dbname='cippedigree');
-#     res <- dbSendQuery(con, "SELECT ped_family.pedNameCipnumber, ped_family.pedFemaleCipnumber, ped_family.pedFemale, ped_family.pedMaleCipnumber, ped_family.pedMale, ped_population.PedPopName, ped_family.pedCycle FROM ped_family INNER JOIN ped_population ON ped_family.ped_population_PedPopId = ped_population.PedPopId WHERE ped_family.Crop_CropId = 'SO'")
-#     potato_pedigree <- fetch(res, n = -1)
-#     write.dbf(potato_pedigree,"potato_pedigree.dbf")
-#     dbDisconnect(con)
- 
+
     m <- dbDriver("MySQL");
     con <- dbConnect(m,user='cippedigree',password='cF6Jr<tVW]dU60713',host='176.34.248.121',dbname='cippedigree');
     res <- dbSendQuery(con, "SELECT ped_family.pedNameCipnumber, ped_family.pedFemaleCipnumber, ped_family.pedFemale, ped_family.pedMaleCipnumber, ped_family.pedMale, ped_population.PedPopName, ped_family.pedCycle FROM ped_family INNER JOIN ped_population ON ped_family.ped_population_PedPopId = ped_population.PedPopId WHERE ped_family.Crop_CropId = 'IP'")
     sweetpotato_pedigree <- fetch(res, n = -1)
     names(sweetpotato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
-    #write.dbf(sweetpotato_pedigree,"sweetpotato_pedigree.dbf")
-    
+
     #path <- fbglobal::get_base_dir()
-    path_file <- paste(path, "sweetpotato_pedigree.rds", sep = "\\")
+    path_file <- file.path(path, "sweetpotato_pedigree.rds")
     saveRDS(sweetpotato_pedigree,file = path_file)
     
     
     #saveRDS(sweetpotato_pedigree,file = "sweetpotato_pedigree.rds")
     dbDisconnect(con)
     #foreign::write.dbf(mtl_data, "mlist_biomart.dbf") 
+    } else {
+     
+      db <- "http://c5sire.github.io/hdata/db.zip"
+      td <- tempdir()
+      
+      fp <- file.path(td, "db.zip")
+      download.file(db, fp)
+
+      od <- fbglobal::get_base_dir()
+      unzip(fp, exdir = od, overwrite = TRUE)
+      unlink(fp)
+    }
     
     # Distribution DataBase ---------------------------------------------------
     
