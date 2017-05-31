@@ -26,14 +26,23 @@ library(fbglobal)
 #test combinar listas de pedegree y passport book
 
 
-tabNameS <- "generateList"
-tabNameS2 <- "generateList"
+#tabNameS <- "generateList"
+#tabNameS2 <- "generateList"
+tabNameS <- "parentalList"
 
 server <- function(input, output, session,values) {
   values = shiny::reactiveValues()
+
   fbmlist::server_generate(input, output, session, values = values)
   fbmlist::server_managerlist(input, output, session, values = values)
   fbmlist::server_createlist(input, output, session, values = values)
+
+  #fbmlist::server_generate(input, output, session, values = values)
+  #fbmlist::server_managerlist(input, output, session, values = values)
+  #fbmlist::server_createlist(input, output, session, values = values)
+  fbmlist::server_parentalList(input, output, session, values = values)
+  
+
 }
 
 ui <- dashboardPage(skin = "yellow",
@@ -56,12 +65,19 @@ ui <- dashboardPage(skin = "yellow",
                     dashboardBody(
                       
                       tabItems(
+
                         
                         
                         fbmlist::generate_ui(name = "generate"),
                         fbmlist::createlist_ui(name = "create"),
                         fbmlist::managerlist_ui(name = "manage")
                         
+
+                        #fbmlist::generate_ui(name = tabNameS)#,
+                        #fbmlist::createlist_ui(name = tabNameS)
+                        #fbmlist::managerlist_ui(name = tabNameS)
+                        fbmlist::parental_ui(name = tabNameS)
+
                       )
                     )
 )

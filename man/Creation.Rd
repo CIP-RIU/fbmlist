@@ -6,6 +6,13 @@
 \usage{
 accessname_code(accession_name, accession_number, nrep)
 }
+\arguments{
+\item{accession_name}{the accession's name}
+
+\item{nrep}{number of repetitions}
+
+\item{accesssion_number}{the accession's number}
+}
 \description{
 Accession Name Creation
 }

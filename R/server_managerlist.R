@@ -42,8 +42,9 @@ server_managerlist <- function(input,output,session, values){
       gmtfiles <- data.frame(short_name, dbf_file_list, stringsAsFactors = FALSE)
       names(gmtfiles) <- c("short_name","full_name")
       
-      out_list <- c("dspotatotrials_dpassport.rds", "dssweettrials_dpassport.rds", "potato_pedigree.rds", "sweetpotato_pedigree.rds")
-      gmtfiles <- dplyr::filter(.data = gmtfiles, (short_name %in% out_list))
+
+      out_list <- c("dspotatotrials_dpassport.rds", "dssweettrials_dpassport.rds", "potato_pedigree.rds", "sweetpotato_pedigree.rds", "table_sites.rds")
+      gmtfiles <- dplyr::filter(.data = gmtfiles, !(short_name %in% out_list))
 
       gmtfiles
     }
@@ -58,10 +59,12 @@ server_managerlist <- function(input,output,session, values){
   
   
   shiny::observeEvent(input$fbmlist_syncronize , {
-    shiny::withProgress(message = "Syncronizing material list from DB...",value= 0,
+    shiny::withProgress(message = "Syncronizing material list from DB...", detail = 'This may take a while...', value= 0,
                         {
+                          
                           try({ #begin of Try
                             #mtl_files_react()
+                            incProgress(3/15)
                             fbmlist_data()
                             
                           })# end of Try
@@ -116,15 +119,22 @@ server_managerlist <- function(input,output,session, values){
     })
   
   output$fbmlist_Export <- downloadHandler(
+    
+    
+    
     filename = function() {
-      paste("Material_list", '.xlsx', sep='')
+      matlist_filename <- selected_file() %>% basename() %>% tools::file_path_sans_ext()
+      #rint(matlist_filename)
+      #paste(matlist_filename, '.xlsx', sep='')
+      #paste("Material_list", '.xlsx', sep='')
     },
     content = function(file) {
  
-      print(mtl_files_react())
-      print(selected_file())
-      print(download_data())
-      print(fbglobal::get_base_dir())
+      # print(mtl_files_react())
+      # print(selected_file())
+      # print(download_data())
+      # print(fbglobal::get_base_dir())
+      
       
       
       tbl_list_data <- download_data()

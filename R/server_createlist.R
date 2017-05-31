@@ -327,38 +327,40 @@ server_createlist <- function(input,output,session, values){
                             #DT::datatable(mtl_table, rownames = FALSE, 
                             #DT::datatable(temp_mtl_table, rownames = FALSE,  ##temp_mtl_table is the all table
                             DT::datatable(mtl_table_f, rownames = FALSE,      ##filtered table
+                                          options = list(scrollX = TRUE, scroller = TRUE),
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
                                           selection = list( mode = "multiple", selected = N), 
-                                          filter = 'bottom',
-                                          extensions = 'Buttons', options = list(
-                                            dom = 'Bfrtip',
-                                            buttons = 
-                                              list(list(
-                                                extend = 'collection',
-                                                buttons = c('csv', 'excel'),
-                                                text = 'Download'
-                                              ))
-                                            
-                                          )
+                                          filter = 'bottom'#,
+                                          # extensions = 'Buttons', options = list(
+                                          #   dom = 'Bfrtip',
+                                          #   buttons = 
+                                          #     list(list(
+                                          #       extend = 'collection',
+                                          #       buttons = c('csv', 'excel'),
+                                          #       text = 'Download'
+                                          #     ))
+                                          #   
+                                          # )
                             )
   
                           } else {
    
                           #DT::datatable(mtl_table, rownames = FALSE, 
                             DT::datatable(temp_mtl_table, rownames = FALSE,
+                                          options = list(scrollX = TRUE, scroller = TRUE),
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
                                           selection = list( mode = "multiple"), 
-                                          filter = 'bottom',
-                                          extensions = 'Buttons', options = list(
-                                            dom = 'Bfrtip',
-                                            buttons = 
-                                              list(list(
-                                                extend = 'collection',
-                                                buttons = c('csv', 'excel'),
-                                                text = 'Download'
-                                              ))
-                                            
-                                          )
+                                          filter = 'bottom'#,
+                                          # extensions = 'Buttons', options = list(
+                                          #   dom = 'Bfrtip',
+                                          #   buttons = 
+                                          #     list(list(
+                                          #       extend = 'collection',
+                                          #       buttons = c('csv', 'excel'),
+                                          #       text = 'Download'
+                                          #     ))
+                                          #   
+                                          # )
                             )
                             
                         }
@@ -366,7 +368,7 @@ server_createlist <- function(input,output,session, values){
                           
                         }) #end of Progress
     
-  })
+  } )
   
   #Row selected by User  ----------------------------------------------------
   gmtl_row_index_new <- eventReactive(input$fbmlist_select_new,{
@@ -442,7 +444,23 @@ server_createlist <- function(input,output,session, values){
       
       row_click
     
-  } 
+    } else {
+      
+      row_select <- input$fbmlist_table_new_rows_selected #comand to get selected values		
+      #row_filter <- input$fbmlist_table_new_rows_all #comand to get filtered values		    
+      #row_mtlist_selection <- dplyr::intersect(row_select,row_filter)		     
+      
+      row_mtlist_selection <- sort(row_select)
+      row_click <- row_mtlist_selection
+      
+      
+    }
+    
+    print(row_click)
+    row_click
+    
+    
+    
 })
 
 
@@ -598,7 +616,7 @@ server_createlist <- function(input,output,session, values){
                                  Continent = fbmlist_continent_dbf,
                                  Country = fbmlist_country_dbf,
                                  Seed_source = NA,
-                                 Simultanious_trials = NA,
+                                 Simultaneous_trials = NA, #Jazmin puts the properly name
                                  Previous_trials = NA,
                                  Date_Created = format(Sys.Date(), "%d %m %Y")
                                 #Breeder_Code = fbmlist_breedercode_dbf
@@ -628,7 +646,7 @@ server_createlist <- function(input,output,session, values){
       
       new_list_tbl <- new_list_tbl[,orden]
       
-      if(input$new_type_trial=="Normal"){ #normal columns by default
+      if(input$new_type_trial=="Standard"){ #normal columns by default
         new_list_tbl <-new_list_tbl
       } else { #remove columns Is_Control, "Scale_Audpc"
         new_list_tbl <- dplyr::select(new_list_tbl, -Is_control, -Scale_audpc)
@@ -655,24 +673,18 @@ server_createlist <- function(input,output,session, values){
       #shinyBS::createAlert(session, "alert_fbmlist_new", "fbdoneAlert", title = "Sucessfully Created!",
       #                     content = "Material List successfully created!", append = FALSE, dismiss = FALSE)
       
+      shinyjs::reset("form")
+      shinyjs::reset("form2")
+      shinyjs::reset("fbmlist_sel_type_new")
+      
       shinysky::showshinyalert(session, "alert_fbmlist_new", paste("Material List successfully created!", "success"), 
                      styleclass = "success")
       
       
+   
       
-      #for(i in 1:2){print(paste("omar",i))}
-      
-#       print("gmt orw index new")
-#       #p <<- "ok"
-#       
-#       #print(gmtl_row_index_new())
-#       print("boton save")
-#       print(length(input$fbmlist_save_new))
-#       print("")
        
-      shinyjs::reset("form")
-      shinyjs::reset("form2")
-      shinyjs::reset("fbmlist_sel_type_new")
+    
       #shinyjs::js$refresh() 
       
     }

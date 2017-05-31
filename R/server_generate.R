@@ -9,7 +9,7 @@
 
 server_generate <- function(input,output,session, values){
   
-  
+   #Reactive data after connecting to database or local lists  
    gmtl_data <- eventReactive(input$fbmlist_connect, {
     dbf_file <- input$fbmlist_sel_list
    
@@ -24,8 +24,14 @@ server_generate <- function(input,output,session, values){
         for(i in 1:n){  
           
           path <- fbglobal::get_base_dir()
+
           path <- file.path(path, dbf_file)
           combine[[i]] <- readRDS(file = dbf_file[i])
+
+          #path <- paste(path,dbf_file,sep = "\\")
+          combine[[i]] <- readRDS(file = dbf_file[i])
+          #combine[[i]] <- readRDS(file = dbf_file[i]) 
+
         } 
       join_books <- data.table::rbindlist(combine,fill = TRUE)
       join_books <- as.data.frame(join_books)
@@ -39,18 +45,29 @@ server_generate <- function(input,output,session, values){
     
   }) 
   
+   #reactive value for displaying box and panels
    output$show_mtable <- reactive({
      return(!is.null(gmtl_data()))
    })
    
+   #reactive value for save button
    output$show_save <- reactive({
      return(length(input$fbmlist_select[1]))
    })
    
+   #set options for show_mtable
    outputOptions(output, 'show_mtable', suspendWhenHidden=FALSE)
 
   
-  output$sel_list_on_btn <- renderUI({
+
+   #selectInput button for selection of local lists or databases
+   output$sel_list_on_btn <- renderUI({
+    #mtl_files()
+    #db_files_choices <- mtl_files()
+    #db_files_choices <- db_files_choices$short_name
+    
+    #db_files_choices <- list("dspotatotrials_dpassport.dbf", "dssweettrials_dpassport.dbf" ,"potato_pedigree.dbf" ,"sweetpotato_pedigree.dbf")
+
     crop <- input$fbmlist_sel_crop
     type_db <- input$fbmlist_sel_type
     mtl_db_sel <- mtl_files()$short_name
@@ -100,12 +117,16 @@ server_generate <- function(input,output,session, values){
                           )
   })
   
+   
+  #TextInput space to write list's name
   output$create_on_name <- renderUI({
     
     req(input$fbmlist_select)
     textInput("fbmlist_create_on_name", label = h3("New list name"), value = "", placeholder = "Write a list name")
   })
   
+  
+  #save button to store information
   output$savelist_on_btn <- renderUI({
     
     req(input$fbmlist_select)
@@ -113,7 +134,8 @@ server_generate <- function(input,output,session, values){
     shinysky::actionButton2("fbmlist_save", label = "Save list", icon = "save", icon.library = "bootstrap")
   })
 
-
+  
+  #Clones founded using textArea
   output$fbmlist_foundclones_gen <- renderText({
     
     mtl_table <- gmtl_data()
@@ -123,7 +145,7 @@ server_generate <- function(input,output,session, values){
     mtl_table <- mtl_table[,1:6]
     temp_mtl_table <- mtl_table
     
-    if(input$fbmlist_txtarea!=""  || !str_detect(input$fbmlist_txtarea_new, "[[:space:]]") ){
+    if(input$fbmlist_txtarea!=""  || !str_detect(input$fbmlist_txtarea, "[[:space:]]") ){
       
       #trimming search filter
       search_filter <- str_split(input$fbmlist_txtarea,"\\n")[[1]]
@@ -156,15 +178,12 @@ server_generate <- function(input,output,session, values){
     
     
   })
-  
-  
-  
-  
+
   
   # Selection on generataed material list button ----------------------------------------------------
   output$fbmlist_table  <-  DT::renderDataTable({
     
-    
+    shiny::req(input$fbmlist_sel_list)
     shiny::req(input$fbmlist_connect)
     #shiny::req(input$fbmlist_selectgenlist)
     
@@ -181,11 +200,6 @@ server_generate <- function(input,output,session, values){
                           n_row <- nrow(mtl_table)
                           mtl_table <-  mutate(mtl_table, IDX = 1:n_row)
                          
-                          #col_names <- c("ACCNum", "ACCNam", "COLLNUMB", "POP", "PEDIGREE") 
-                          #mtl_table <- mtl_table[col_names] #show cols selected
-                          
-                          #print(input$fbmlist_txtarea)
-                          
                           
                           if(input$fbmlist_txtarea!=""){
                             
@@ -260,36 +274,38 @@ server_generate <- function(input,output,session, values){
        
                           DT::datatable( mtl_table_f, rownames = FALSE, 
                                           #selection = list( mode= "multiple",  selected =  rownames(mtl_table)), 
+                                          options = list(scrollX = TRUE, scroller = TRUE),
                                           selection = list( mode = "multiple", selected = Search), 
-                                          filter = 'bottom',
-                                          extensions = 'Buttons', options = list(
-                                            dom = 'Bfrtip',
-                                            buttons = 
-                                              list(list(
-                                                extend = 'collection',
-                                                buttons = c('csv', 'excel'),
-                                                text = 'Download'
-                                              ))
-                                            
-                                          )
+                                          filter = 'bottom'#,
+                                          # extensions = 'Buttons', options = list(
+                                          #   dom = 'Bfrtip',
+                                          #   buttons = 
+                                          #     list(list(
+                                          #       extend = 'collection',
+                                          #       buttons = c('csv', 'excel'),
+                                          #       text = 'Download'
+                                          #     ))
+                                          #   
+                                          # )
                             )
 
                           } else {
 
                           DT::datatable(mtl_table, rownames = FALSE,
                                         #selection = list( mode= "multiple",  selected =  rownames(mtl_table)),
+                                        options = list(scrollX = TRUE, scroller = TRUE),
                                         selection = list( mode = "multiple"),
-                                                   filter = 'bottom',
-                                                   extensions = 'Buttons', options = list(
-                                                    dom = 'Bfrtip',
-                                                    buttons =
-                                                      list(list(
-                                                        extend = 'collection',
-                                                        buttons = c('csv', 'excel'),
-                                                        text = 'Download'
-                                                      ))
-
-                                                  )
+                                                   filter = 'bottom'#,
+                                                  #  extensions = 'Buttons', options = list(
+                                                  #   dom = 'Bfrtip',
+                                                  #   buttons =
+                                                  #     list(list(
+                                                  #       extend = 'collection',
+                                                  #       buttons = c('csv', 'excel'),
+                                                  #       text = 'Download'
+                                                  #     ))
+                                                  # 
+                                                  # )
                                         )
 
                           }
@@ -298,6 +314,8 @@ server_generate <- function(input,output,session, values){
   
   })
   
+  
+  #the index of selection material
   gmtl_row_index <- eventReactive(input$fbmlist_select,{
     
     row_click <- NULL
@@ -407,6 +425,7 @@ server_generate <- function(input,output,session, values){
 })
   
   
+  #table of selected clones after pressing "Select marked"
   output$fbmlist_choosen_table  <- DT::renderDataTable({
     
     #print(input$foo)
@@ -418,10 +437,10 @@ server_generate <- function(input,output,session, values){
     chosen_gmtl_table <-  mtl_table_temp[index, ]
     chosen_gmtl_table 
     
-  }, options = list(searching = FALSE) )
+  }, options = list(searching = FALSE, scrollX = TRUE, scroller = TRUE) )
+  
   
   # Observers of fbmlist ----------------------------------------------------
-  
   shiny::observeEvent( input$fbmlist_save, {
     
     index <- gmtl_row_index()
@@ -472,22 +491,32 @@ server_generate <- function(input,output,session, values){
                                   Family_AcceNumb = NA,
                                   Cycle	 = NA,
                                   Seed_source = NA,	
-                                  Simultanious_trials = NA,
+                                  Simultaneous_trials = NA,
                                   list_name= fbmlist_name_dbf,
                                   Previous_trials = NA,
                                   Date_Created = format(Sys.Date(), "%d %m %Y")
                               )
       
         gen_list_tbl <- c(chosen_gmtl_table_list, extra_parameters)
+        
         gen_list_tbl <- as.data.frame(gen_list_tbl, stringsAsFactors = FALSE) 
+        
+        
       }
       #foreign::write.dbf(dataframe = chosen_gmtl_table, file = fbmlist_name_dbf, factor2char = FALSE)
       gen_list_tbl <- gen_list_tbl
       
+      header_order <- c("Numeration", "Accession_Number",	"Accession_Name", "Accession_Code", "Is_control",	"Scale_audpc",	"Family_AcceNumb"	,
+                        "Female_codename",	"Male_AcceNumb",  "Male_codename",
+                        "Population",	"Cycle"	,"Seed_source", "Simultaneous_trials",	"Previous_trials", "list_name",	"Previous_trials",	"Date_Created")
       
-      if(input$gen_type_trial=="Normal"){ #normal columns by default
+      header_found <- dplyr::intersect(header_order , colnames(gen_list_tbl))
+      
+      gen_list_tbl <- gen_list_tbl[, header_found]
+      
+      if(input$gen_type_trial=="Standard"){ #normal columns by default
         gen_list_tbl <- gen_list_tbl
-      } else { #remove columns Is_Control, "Scale_Audpc"
+      } else {   #PVS #remove columns Is_Control, "Scale_Audpc" 
         gen_list_tbl <- dplyr::select(gen_list_tbl, -Is_control, -Scale_audpc)
         gen_list_tbl <- as.data.frame(gen_list_tbl)
       }

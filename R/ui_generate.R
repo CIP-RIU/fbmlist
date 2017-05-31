@@ -15,13 +15,13 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
   
 
   
-  shinydashboard::tabItem(tabName = name,
+  shinydashboard::tabItem(tabName = name, # begin data_processing tabItem
                            h2(title),   
                           
                           shinyjs::useShinyjs(),
                           shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"),
                           
-                          fluidRow(
+                          fluidRow( #Buttons for database connection
                             box(
                               title = " ", width = 12, status = "primary", height = "250px",
                               #p("Seleccione un cultivo y una base de datos"),
@@ -35,8 +35,8 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                                                          )
                                                          
                                                          )#,
-                                                        
-                                       
+                                                     
+                                          
                                        ),
 
                                 column(6, selectizeInput("fbmlist_sel_type", "Select database", width="100%", selected = 2,
@@ -54,21 +54,11 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                               tags$style(type='text/css', "#fbmlist_connect  { width:100%; margin-top: 25px;}")
                               
                             )#,
-#                             box(
-#                               title = "Manage lists", width = 6, status = "primary", height = "250px",
-#                               p("Seleccione una o varias listas"),
-#                               
-#                               fluidRow(
-#                                 #column(6, selectizeInput('e5', 'Select list', list("List 1" = 1, "List 2" = 2, "List 3" = 3, "List 4" = 4, "List 5" = 5),
-#                                 #                         multiple = TRUE, options = list(maxItems = 3), width = "100%")),
-#                                 column(6, uiOutput("sel_genlist_on_btn")),
-#                                 column(6, actionButton("fbmlist_selectgenlist", "Select list", icon("fa fa-list"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150))
-#                               )
-#                             )
-                          ),
+
+                          ), #End of #Buttons for database connection
                         
 
-# Conditional Panel for Connect DB button ---------------------------------
+# Conditional Panel for Selection of material and Search of material ---------------------------------
 
 
                 conditionalPanel( condition = "output.show_mtable",  ##conditional Panel
@@ -100,7 +90,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                                 div(dataTableOutput("fbmlist_table"), style = "font-size:85%"),
                                 #DT::dataTableOutput('fbmlist_table'),
                                 br(),
-                                actionButton("fbmlist_select", "Select marks", icon("fa fa-arrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150),
+                                actionButton("fbmlist_select", "Select marked", icon("fa fa-arrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150),
                                 br(),
                                 br(),
                                 br()
@@ -125,7 +115,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                               br(),
                               br(),
                               uiOutput("create_on_name"),
-                              shiny::selectInput(inputId = "gen_type_trial",label = "Type of trial", c("Normal","PVS"), selected = 1 )
+                              shiny::selectInput(inputId = "gen_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1 )
                               
                               #textInput("text", label = h3("Text input"), value = "Enter text..."),
                               #textInput("text", label = h3("Text input"), value = "Enter text...")
