@@ -555,15 +555,15 @@ server_distribution <- function(input,output,session, values){
   #el mejorador que pidio mas genotipos.
   
   #ToDo: With leaflet 
-  library(leaflet)
-  library(geosphere)
-  gcIntermediate(c(5,52), c(-120,37),
-                 n=100,
-                 addStartEnd=TRUE,
-                 sp=TRUE) %>%
-    leaflet() %>%
-    addTiles() %>%
-    addPolylines()
+  # library(leaflet)
+  # library(geosphere)
+  # gcIntermediate(c(5,52), c(-120,37),
+  #                n=100,
+  #                addStartEnd=TRUE,
+  #                sp=TRUE) %>%
+  #   leaflet() %>%
+  #   addTiles() %>%
+  #   addPolylines()
   
   
   
