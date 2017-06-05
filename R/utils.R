@@ -6,6 +6,7 @@
   
     locos <- Sys.info()["sysname"][[1]]
     
+    #datos
     path <- fbglobal::get_base_dir()
     
     if(locos == "Windows") {

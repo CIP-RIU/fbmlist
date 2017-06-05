@@ -947,7 +947,6 @@ server_parentlist <- function(input,output,session, values){
          
        }
        
-      
            parental_table <- parental_table
            db_parent <- list(female = chosen_gmtl_table_fem, male = chosen_gmtl_table_male, parental_table = parental_table)
            
