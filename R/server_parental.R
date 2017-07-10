@@ -540,7 +540,7 @@ server_parentlist <- function(input,output,session, values){
     chosen_gmtl_table 
     
   }, 
-                                                                  options = list(searching = FALSE, pageLength = 5, scrollX = TRUE, scroller = TRUE), rownames= FALSE, selection = 'none' )
+    options = list(searching = FALSE, pageLength = 5, scrollX = TRUE, scroller = TRUE), rownames= FALSE, selection = 'none' )
   
   # End Female ---------------------------------------------------------------
   
@@ -832,7 +832,7 @@ server_parentlist <- function(input,output,session, values){
     chosen_gmtl_table 
     
   }, 
-                                                                    options = list(searching = FALSE, pageLength = 5, scrollX = TRUE, scroller = TRUE), rownames= FALSE, selection = 'none')
+     options = list(searching = FALSE, pageLength = 5, scrollX = TRUE, scroller = TRUE), rownames= FALSE, selection = 'none')
   
   # End Male ---------------------------------------------------------------
   

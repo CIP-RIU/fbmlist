@@ -125,7 +125,8 @@ server_managerlist <- function(input,output,session, values){
     filename = function() {
       matlist_filename <- selected_file() %>% basename() %>% tools::file_path_sans_ext()
       #rint(matlist_filename)
-      #paste(matlist_filename, '.xlsx', sep='')
+      #file.path(matlist_filename, '.xlsx', sep= "")
+      paste(matlist_filename, '.xlsx', sep='')
       #paste("Material_list", '.xlsx', sep='')
     },
     content = function(file) {

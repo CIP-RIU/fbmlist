@@ -21,4 +21,3 @@ Server side for distribution database
 \author{
 Omar Benites
 }
-
