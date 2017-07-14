@@ -115,7 +115,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                               br(),
                               br(),
                               uiOutput("create_on_name"),
-                              shiny::selectInput(inputId = "gen_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1 )
+                              shiny::selectInput(inputId = "gen_type_trial",label = "Type of procedure", c("Standard","PVS"), selected = 1 )
                               
                               #textInput("text", label = h3("Text input"), value = "Enter text..."),
                               #textInput("text", label = h3("Text input"), value = "Enter text...")

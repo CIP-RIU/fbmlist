@@ -109,7 +109,9 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                 uiOutput("continent_new_name"),
                                                 uiOutput("country_new_name"),
                                                 uiOutput("breedercode_new_name"),
-                                                shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1),
+                                                #shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1),
+                                                shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","PVS"), selected = 1),
+                                                
                                                 br()
                                               ),
                                               

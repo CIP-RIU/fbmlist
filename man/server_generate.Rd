@@ -21,4 +21,3 @@ Server Side for generation of Material List
 \author{
 Omar Benites
 }
-
