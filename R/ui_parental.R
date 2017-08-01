@@ -137,8 +137,8 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                                 title = "Fill your parental list information", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
                                                 br(),
                                                 br(),
-                                                uiOutput("create_parent_name"),
-                                                shiny::selectInput(inputId = "parent_type_trial",label = "Type of procedure", c("Standard","PVS"), selected = 1 )
+                                                uiOutput("create_parent_name")#,
+                                                #shiny::selectInput(inputId = "parent_type_trial",label = "Type of procedure", c("Standard","PVS"), selected = 1 )
                                                 
                                                 #textInput("text", label = h3("Text input"), value = "Enter text..."),
                                                 #textInput("text", label = h3("Text input"), value = "Enter text...")

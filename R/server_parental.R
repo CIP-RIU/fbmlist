@@ -4,6 +4,12 @@
 #' @param output shinyserver output
 #' @param session shinyserver session
 #' @param values reactive values
+#' @importFrom shiny eventReactive reactive selectizeInput renderUI textInput withProgress renderText
+#' @importFrom data.table rbindlist
+#' @importFrom stringr str_detect str_split str_trim
+#' @importFrom shinysky actionButton2 showshinyalert
+#' @importFrom DT renderDataTable datatable
+#' @importFrom dplyr filter mutate
 #' @author Omar Benites
 #' @export
 
@@ -66,7 +72,7 @@ server_parentlist <- function(input,output,session, values){
       
       path <- fbglobal::get_base_dir()
       path <- paste(path, dbf_file,sep = "\\")
-      print(path)
+      #print(path)
       germlist_db <- readRDS(path)
       
       if(stringr::str_detect(path, "parent")){
@@ -81,7 +87,7 @@ server_parentlist <- function(input,output,session, values){
   }) 
 
   #Reactive data for parents 
-  output$show_mtable_parent <- reactive({
+  output$show_mtable_parent <- shiny::reactive({
     return(!is.null(gmtl_data()))
   })
 
@@ -94,7 +100,7 @@ server_parentlist <- function(input,output,session, values){
   outputOptions(output, 'show_mtable_parent', suspendWhenHidden=FALSE)
   
   #selectInput button for local lists and databases
-  output$sel_list_parent_btn <- renderUI({
+  output$sel_list_parent_btn <- shiny::renderUI({
     #mtl_files()
     #db_files_choices <- mtl_files()
     #db_files_choices <- db_files_choices$short_name
@@ -150,14 +156,14 @@ server_parentlist <- function(input,output,session, values){
   })
   
   # Parent list's name
-  output$create_parent_name <- renderUI({
+  output$create_parent_name <- shiny::renderUI({
     
     req(input$fbmlist_select_parent)
     textInput("fbmlist_create_parent_name", label = h3("New list name"), value = "", placeholder = "Write a list name")
   })
   
   # Render ui Button for saveing local lists
-  output$savelist_parent_btn <- renderUI({
+  output$savelist_parent_btn <- shiny::renderUI({
     
     req(input$fbmlist_select_parent)
     #shiny::actionButton("fbmlist_save", label = "Save List", icon = icon("save"))
@@ -173,11 +179,14 @@ server_parentlist <- function(input,output,session, values){
     
     #shiny::req(input$fbmlist_sel_list_parent)
     #shiny::req(input$fbmlist_connect_parent)
-    germlist_db <- gmtl_data()
-    print(gmtl_data())
-    germlist_parent_db <- germlist_db$parental_table
     
     req(input$fbmlist_sel_type_parent)
+    
+    germlist_db <- gmtl_data()
+    #print(gmtl_data())
+    germlist_parent_db <- germlist_db$parental_table
+    
+    #req(input$fbmlist_sel_type_parent)
     
     if(input$fbmlist_sel_type_parent=="Local" ){
     
@@ -274,7 +283,7 @@ server_parentlist <- function(input,output,session, values){
                           mtl_table <- mtl_table[,1:6]
                           
                           n_row <- nrow(mtl_table)
-                          mtl_table <-  mutate(mtl_table, IDX = 1:n_row)
+                          mtl_table <-  dplyr::mutate(mtl_table, IDX = 1:n_row)
                           
                           #col_names <- c("ACCNum", "ACCNam", "COLLNUMB", "POP", "PEDIGREE") 
                           #mtl_table <- mtl_table[col_names] #show cols selected

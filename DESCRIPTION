@@ -4,7 +4,8 @@ Version: 2.0.5
 Authors@R: person("Omar Benites", "Omar", email = "obacc07@gmail.com", role = c("aut", "cre"))
 Description: The fbmlist package provides a material list manager to create and generate germoplasm list.
 Depends:
-    R (>= 3.1.1),
+    R (>= 3.1.1)
+Imports:
     DBI,
     RMySQL,
     spsurvey,
@@ -16,8 +17,11 @@ Depends:
     shiny,
     shinydashboard,
     shinyjs,
+    stringr,
     shinysky,
-    stringr
+    fbglobal
+Remotes: CIP-RIU/fbglobal, 
+         CIP-RIU/shinysky
 License: MIT + file LICENSE
 BugReports: https://github.com/omarbenites/fbmlist/issues
 Encoding: UTF-8

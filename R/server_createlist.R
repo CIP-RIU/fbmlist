@@ -200,7 +200,8 @@ server_createlist <- function(input,output,session, values){
     } else {
       
         continent_list <- filter(countrycode_data, continent == continent_header)
-        continent_list <- select(continent_list, country.name)
+        #continent_list <- select(continent_list, country.name)#deprecated code
+        continent_list <- select(continent_list, country.name.en)
         
     }
     
@@ -371,7 +372,7 @@ server_createlist <- function(input,output,session, values){
   } )
   
   #Row selected by User  ----------------------------------------------------
-  gmtl_row_index_new <- eventReactive(input$fbmlist_select_new,{
+  gmtl_row_index_new <- shiny::eventReactive(input$fbmlist_select_new,{
   
     temp_mtl_table <- gmtl_data_new()
       
@@ -633,21 +634,19 @@ server_createlist <- function(input,output,session, values){
      
       names(new_list_tbl)[9] <- "Accession_Number"
       
-      
-      #print("new list tabla")
-      # print(head(new_list_tbl))
-      # print("new")
-      
       orden <- headers_new_list() #from utils.R
       # print("orden")
       # print(orden)
-      
+      # print(names(new_list_tbl))
+      # 
+      # print( new_list_tbl)
+     dtt <<-  new_list_tbl
       #saveRDS(new_list_tbl,"new_list_tbl1.rds")
       
-      new_list_tbl <- new_list_tbl[,orden]
+      new_list_tbl <- new_list_tbl[, orden]
       
       if(input$new_type_trial=="Standard"){ #normal columns by default
-        new_list_tbl <-new_list_tbl
+        new_list_tbl <- new_list_tbl
       } else { #remove columns Is_Control, "Scale_Audpc"
         new_list_tbl <- dplyr::select(new_list_tbl, -Is_control, -Scale_audpc)
         new_list_tbl <- as.data.frame(new_list_tbl)

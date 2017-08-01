@@ -25,7 +25,8 @@ distribution_ui <- function(type = "tab", title = "Distribution Database", name 
                               
                               fluidRow(
                                 column(6, selectizeInput(inputId = "fbmlist_sel_crop_dist", label = "Select crop", width="100%",
-                                                         choices = c("potato","sweetpotato"),
+                                                         #choices = c("potato","sweetpotato"),
+                                                         choices = c("potato"),
                                                          options = list(
                                                            placeholder = 'Please select the crop',
                                                            onInitialize = I('function() { this.setValue(""); }')

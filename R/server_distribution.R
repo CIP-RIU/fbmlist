@@ -10,7 +10,7 @@
 server_distribution <- function(input,output,session, values){
   
   #Reactive data after connecting to database or local lists  
-  gmtl_data <- eventReactive(input$fbmlist_connect_dist, {
+  gmtl_data <- shiny::eventReactive(input$fbmlist_connect_dist, {
     
     
     dbf_file <- input$fbmlist_sel_list_dist
@@ -43,7 +43,7 @@ server_distribution <- function(input,output,session, values){
     }
     
     n_row <- nrow(germlist_db)
-    germlist_db <-  mutate(germlist_db, IDX = 1:n_row)
+    germlist_db <-  dplyr::mutate(germlist_db, IDX = 1:n_row)
     names(germlist_db) <- c("Accession_Number", "Male", "Female", "Distribution_status", "Health_status", "Accession_storage", "Distribution_Number",
                                  "Year", "Request", "Form_of_Distribution", "Crop", "Consignee", "Institute/Center", "Country", "Order_status", "DistributionData", "IDX") 
     
@@ -53,13 +53,13 @@ server_distribution <- function(input,output,session, values){
   
   
   #reactive value for displaying box and panels
-  output$show_mtable_dist <- reactive({
+  output$show_mtable_dist <- shiny::reactive({
     return(!is.null(gmtl_data()))
   })
   
   
   #reactive value for save button
-  output$show_save_dist <- reactive({
+  output$show_save_dist <- shiny::reactive({
     return(length(input$fbmlist_select_dist[1]))
   })
   
@@ -70,7 +70,7 @@ server_distribution <- function(input,output,session, values){
   
   
   #selectInput button for selection of local lists or databases
-  output$sel_list_dist_btn <- renderUI({
+  output$sel_list_dist_btn <- shiny::renderUI({
    
     crop <- input$fbmlist_sel_crop_dist
     type_db <- input$fbmlist_sel_type_dist
@@ -555,19 +555,19 @@ server_distribution <- function(input,output,session, values){
   #el mejorador que pidio mas genotipos.
   
   # ToDo: With leaflet
-  library(leaflet)
-  library(geosphere)
-  gcIntermediate(c(5,52), c(-120,37),
-                 n=100,
-                 addStartEnd=TRUE,
-                 sp=TRUE) %>%
-    leaflet() %>%
-    addTiles() %>%
-    addPolylines()
-  
-  
-  
-}
+#   library(leaflet)
+#   library(geosphere)
+#   gcIntermediate(c(5,52), c(-120,37),
+#                  n=100,
+#                  addStartEnd=TRUE,
+#                  sp=TRUE) %>%
+#     leaflet() %>%
+#     addTiles() %>%
+#     addPolylines()
+#   
+#   
+#   
+ }
 
 
 
