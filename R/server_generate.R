@@ -506,7 +506,7 @@ server_generate <- function(input,output,session, values){
       #foreign::write.dbf(dataframe = chosen_gmtl_table, file = fbmlist_name_dbf, factor2char = FALSE)
       gen_list_tbl <- gen_list_tbl
       
-      header_order <- c("Numeration", "Accession_Number",	"Accession_Name", "Accession_Code", "Is_control",	"Scale_audpc",	"Family_AcceNumb"	,
+      header_order <- c("Numeration", "Accession_Number",	"Accession_Name", "Accession_Code", "Is_control",	"Scale_audpc",	"Family_AcceNumb", "Female_AcceNumb",
                         "Female_codename",	"Male_AcceNumb",  "Male_codename",
                         "Population",	"Cycle"	,"Seed_source", "Simultaneous_trials",	"Previous_trials", "list_name",	"Previous_trials",	"Date_Created")
       

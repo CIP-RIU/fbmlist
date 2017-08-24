@@ -5,6 +5,7 @@
 #' @param type type of UI element, deault is a tab in a shinydashboard
 #' @param title diaply title name
 #' @param name UI TabName
+#' @importFrom shiny h2 fluidRow box column uiOutput icon tags conditionalPanel
 #' @export
 #' 
 

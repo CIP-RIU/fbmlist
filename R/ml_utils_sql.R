@@ -11,8 +11,6 @@ fbmlist_data <- function(){
   
   if(locos == "Windows") {
     
-    
-    
     m <- dbDriver("MySQL");
     con <- dbConnect(m,user='dspotatotrials',password='ca7H=j~$V+p2G0715',host='176.34.248.121',dbname='datacippotato_martpot_trials');
     res <- dbSendQuery(con,   "SELECT `CIPNUMBER`, `CULTVRNAME`, `COLNUMBER`, `FEMALE`, `MALE`, `PopulationGroup` FROM `dspotatotrials__dpassport__main`")
@@ -46,7 +44,7 @@ fbmlist_data <- function(){
     
     
     m <- dbDriver("MySQL");
-    con <- dbConnect(m,user='cippedigree',password='cF6Jr<tVW]dU60713',host='176.34.248.121',dbname='cippedigree');
+    con <- dbConnect(m,user='cipsis',password='cQKMmxXY0BaTAU60316',host='176.34.248.121',dbname='cipsis');
     res <- dbSendQuery(con, "SELECT ped_family.pedNameCipnumber, ped_family.pedFemaleCipnumber, ped_family.pedFemale, ped_family.pedMaleCipnumber, ped_family.pedMale, ped_population.PedPopName, ped_family.pedCycle FROM ped_family INNER JOIN ped_population ON ped_family.ped_population_PedPopId = ped_population.PedPopId WHERE ped_family.Crop_CropId = 'SO'")
     potato_pedigree <- fetch(res, n = -1)
     names(potato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
@@ -62,7 +60,7 @@ fbmlist_data <- function(){
     dbDisconnect(con)
     
     m <- dbDriver("MySQL");
-    con <- dbConnect(m,user='cippedigree',password='cF6Jr<tVW]dU60713',host='176.34.248.121',dbname='cippedigree');
+    con <- dbConnect(m,user='cipsis',password='cQKMmxXY0BaTAU60316',host='176.34.248.121',dbname='cipsis');
     res <- dbSendQuery(con, "SELECT ped_family.pedNameCipnumber, ped_family.pedFemaleCipnumber, ped_family.pedFemale, ped_family.pedMaleCipnumber, ped_family.pedMale, ped_population.PedPopName, ped_family.pedCycle FROM ped_family INNER JOIN ped_population ON ped_family.ped_population_PedPopId = ped_population.PedPopId WHERE ped_family.Crop_CropId = 'IP'")
     sweetpotato_pedigree <- fetch(res, n = -1)
     names(sweetpotato_pedigree) <- c("Accession_Number","Female_AcceNumb","Female_codename","Male_AcceNumb","Male_codename","Population", "Cycle")
@@ -124,7 +122,7 @@ fbmlist_data <- function(){
   
   # Distribution DataBase ---------------------------------------------------
   
-
+  
 }
 
 
@@ -216,7 +214,7 @@ headers_new_list <-  function(){
   out <- c("Numeration", "Accession_Number", "Accession_Name", "Accession_code", 
            "Female_AcceNumb", "Female_codename", "Male_AcceNumb", "Male_codename", "Population",
            "Cycle", "Is_control", "Scale_audpc", "Material_list_name" , "Researcher_Name" ,    "Continent"   ,       
-           "Country", "Seed_source",  "Simultaneous_trials", "Previous_trials","Date_Created" ) 
+           "Country", "Seed_source",  "Simultaneous_trials", "Previous_trials","Date_Created") 
 }
 
 
