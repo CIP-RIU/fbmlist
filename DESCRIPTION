@@ -2,7 +2,8 @@ Package: fbmlist
 Title: The Germoplam Manager for HiDAP
 Version: 2.0.5
 Authors@R: person("Omar Benites", "Omar", email = "obacc07@gmail.com", role = c("aut", "cre"))
-Description: The fbmlist package provides a material list manager to create and generate germoplasm list.
+Description: The fbmlist package provides a material list manager to create and
+    generate germoplasm list.
 Depends:
     R (>= 3.0.2)
 Imports:
@@ -20,10 +21,10 @@ Imports:
     stringr,
     shinysky,
     fbglobal
-Remotes: CIP-RIU/fbglobal, 
-         CIP-RIU/shinysky
+Remotes: CIP-RIU/fbglobal,
+    CIP-RIU/shinysky
 License: MIT + file LICENSE
 BugReports: https://github.com/omarbenites/fbmlist/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 5.0.1
