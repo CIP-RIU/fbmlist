@@ -154,21 +154,21 @@ server_generate <- function(input,output,session, values){
 
       #extracting columns Accesion Number and Accesion Name
       material_db_accnum <- as.character(temp_mtl_table$Accession_Number)
-      material_db_accname <- as.character(temp_mtl_table$Accession_Name) #in case of generate (clone list), it has Accesion Name
+      material_db_accname <- as.character(temp_mtl_table$Accession_Name) #in case of generate (clone list), it has Accession Name
       
       material_acc_union <- union(material_db_accnum, material_db_accname)
 
-      out_dbacc_search <- setdiff(search_filter, material_acc_union) #find the element which are NOT in the inserction
+      out_dbacc_search <- setdiff(search_filter, material_acc_union) #find the element which are NOT in the intesection
       out_dbacc_search <- out_dbacc_search[!is.na(out_dbacc_search)]
       out_dbacc_search <- out_dbacc_search[out_dbacc_search!=""]
       n_search <- length(out_dbacc_search)
       print(n_search)
       
-      # Show messages according to accesion founder in accesion number or accesion name
+      # Show messages according to accesion founder in accession number or accesion name
       
       if(n_search>0){ #for accession number, flag =1
           out <- paste(out_dbacc_search, collapse = ", ")
-          out <- paste("N= ", n_search, " accesion(s) were not found: ", out, sep="")
+          out <- paste("N= ", n_search, " accession(s) were not found: ", out, sep="")
       } else {
           out <- paste("", sep = "")
       }

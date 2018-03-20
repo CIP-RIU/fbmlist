@@ -43,7 +43,7 @@ server_managerlist <- function(input,output,session, values){
       names(gmtfiles) <- c("short_name","full_name")
       
 
-      out_list <- c("dspotatotrials_dpassport.rds", "dssweettrials_dpassport.rds", "potato_pedigree.rds", "sweetpotato_pedigree.rds", "table_sites.rds")
+      out_list <- c("potato_db_distribution.rds", "hot_fieldbook.rds" ,"dspotatotrials_dpassport.rds", "dssweettrials_dpassport.rds", "potato_pedigree.rds", "sweetpotato_pedigree.rds", "table_sites.rds")
       gmtfiles <- dplyr::filter(.data = gmtfiles, !(short_name %in% out_list))
 
       gmtfiles
@@ -59,14 +59,17 @@ server_managerlist <- function(input,output,session, values){
   
   
   shiny::observeEvent(input$fbmlist_syncronize , {
-    shiny::withProgress(message = "Syncronizing material list from DB...", detail = 'This may take a while...', value= 0,
+    shiny::withProgress(message = "Syncronizing material list from DB...", detail = 'This may take more than 5 minutes', value= 0,
                         {
                           
                           try({ #begin of Try
                             #mtl_files_react()
                             incProgress(3/15)
-                            fbmlist_data()
+                            #shinysky::showshinyalert(session, "alert_fbmlist_syncronize", paste(""), styleclass = "info")
+                            incProgress(10/15)
                             
+                            fbmlist_data()
+                            incProgress(15/15)
                           })# end of Try
                         })
   })
@@ -117,10 +120,24 @@ server_managerlist <- function(input,output,session, values){
       
         # }) 
     })
+ 
+  observe({
+    
+    #After all this conditions has been made, the submit button will appear to save the information
+    toggleState("fbmlist_Export", length(input$x2_rows_selected)>0)
+    
+  })
   
+  observe({
+    
+    #After all this conditions has been made, the submit button will appear to save the information
+    toggleState("fbmlist_fileDelete", length(input$x2_rows_selected)>0)
+    
+  })
+  
+   
   output$fbmlist_Export <- downloadHandler(
-    
-    
+   
     
     filename = function() {
       matlist_filename <- selected_file() %>% basename() %>% tools::file_path_sans_ext()
@@ -130,20 +147,15 @@ server_managerlist <- function(input,output,session, values){
       #paste("Material_list", '.xlsx', sep='')
     },
     content = function(file) {
- 
-      # print(mtl_files_react())
-      # print(selected_file())
-      # print(download_data())
-      # print(fbglobal::get_base_dir())
-      
-      
-      
+     
       tbl_list_data <- download_data()
-      
       hs <- openxlsx::createStyle(fontColour = "#000000", fontSize=12,
                         fontName="Calibri", fgFill = "orange")
       
-      openxlsx::write.xlsx(tbl_list_data, file, headerStyle = hs, sheetName="Material_List", colWidths="auto")
+      #shinysky::showshinyalert(session, "alert_fb_done", paste("ERROR: You have not selected a material list. Please select/upload one"), styleclass = "danger")
+          
+        openxlsx::write.xlsx(tbl_list_data, file, headerStyle = hs, sheetName="Material_List", colWidths="auto")
+          
     }
   )
  

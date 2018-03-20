@@ -6,6 +6,7 @@
 #' @param title diaply title name
 #' @param name UI TabName
 #' @importFrom shiny h2 fluidRow column uiOutput icon tags conditionalPanel
+#' @importFrom shinydashboard box
 #' @export
 #' 
 
@@ -18,10 +19,10 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                           shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"),
                           
                           fluidRow(
-                            box(
+                            shinydashboard::box(
                               title = " ", width = 12, status = "primary", height = "250px",
                               #p("Seleccione un cultivo y una base de datos"),
-                               fluidRow(
+                              fluidRow(
                                 column(6, selectizeInput(inputId = "fbmlist_sel_crop_new", label = "Select crop", width="100%",
                                                          choices = c("potato","sweetpotato"),
                                                          options = list(
@@ -29,7 +30,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                            onInitialize = I('function() { this.setValue(""); }')
                                                          )
                                 )#,
-
+                                
                                 ),
                                 
                                 column(6, selectizeInput("fbmlist_sel_type_new", "Select database", width="100%", selected = 2,
@@ -48,10 +49,10 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                               tags$style(type='text/css', "#fbmlist_connect_new  { width:100%; margin-top: 25px;}")
                               
                             )#,
-                     
+                            
                           ),
-
-                     #      ---------------------------------
+                          
+                          #      ---------------------------------
                           conditionalPanel( condition = "output.show_mtable_new",  ##conditional Panel
                                             
                                             fluidRow(
@@ -75,17 +76,17 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                                 
                                               ),
                                               box(id= "search-results",
-                                                #"Resultados de busqueda", width = 8, status = "primary", height = "730px",
-                                                title = "Search Results", width = 8, status = "primary", solidHeader = TRUE, collapsible = TRUE,
-                                                br(),
-                                                br(),
-                                                div(dataTableOutput("fbmlist_table_new"), style = "font-size:85%"),
-                                                #DT::dataTableOutput('fbmlist_table'),
-                                                br(),
-                                                actionButton("fbmlist_select_new", "Select marked", icon("fa fa-arrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150),
-                                                br(),
-                                                br(),
-                                                br()
+                                                  #"Resultados de busqueda", width = 8, status = "primary", height = "730px",
+                                                  title = "Search Results", width = 8, status = "primary", solidHeader = TRUE, collapsible = TRUE,
+                                                  br(),
+                                                  br(),
+                                                  div(dataTableOutput("fbmlist_table_new"), style = "font-size:85%"),
+                                                  #DT::dataTableOutput('fbmlist_table'),
+                                                  br(),
+                                                  actionButton("fbmlist_select_new", "Select marked", icon("fa fa-arrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150),
+                                                  br(),
+                                                  br(),
+                                                  br()
                                               ),
                                               br(),
                                               br(),
@@ -94,52 +95,52 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                                             br(),
                                             br()
                           ),##fin conditional Panel
-
-                     # Conditional Panel for Connect DB button ---------------------------------
-                     
-                     div(
-                       id = "form",
-                          conditionalPanel( condition = "output.show_mtable_new",
-                                            
-                                            fluidRow(
-                                              box(
-                                                #"Fill your Material List Information", width = 4, status = "primary", height = "600px",
-                                                title = "Fill your Material List Information", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
-                                                uiOutput("create_new_name"),
-                                                uiOutput("researcher_new_name"),
-                                                uiOutput("continent_new_name"),
-                                                uiOutput("country_new_name"),
-                                                uiOutput("breedercode_new_name"),
-                                                #shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1),
-                                                shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","PVS"), selected = 1),
+                          
+                          # Conditional Panel for Connect DB button ---------------------------------
+                          
+                          div(
+                            id = "form",
+                            conditionalPanel( condition = "output.show_mtable_new",
+                                              
+                                              fluidRow(
+                                                box(
+                                                  #"Fill your Material List Information", width = 4, status = "primary", height = "600px",
+                                                  title = "Fill your Material List Information", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
+                                                  uiOutput("create_new_name"),
+                                                  uiOutput("researcher_new_name"),
+                                                  uiOutput("continent_new_name"),
+                                                  uiOutput("country_new_name"),
+                                                  uiOutput("breedercode_new_name"),
+                                                  #shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","Varietal Selection"), selected = 1),
+                                                  shiny::selectInput(inputId = "new_type_trial",label = "Type of procedure", c("Standard","PVS"), selected = 1),
+                                                  
+                                                  br()
+                                                ),
                                                 
+                                                div( #begin div
+                                                  id = "form2",
+                                                  box(
+                                                    #width = 8, status = "primary", height = "600px",
+                                                    title = "Material Selected", width = 8, status = "primary", solidHeader = TRUE, collapsible = TRUE,
+                                                    uiOutput("family_new_list"),
+                                                    
+                                                    #DT::dataTableOutput('fbmlist_choosen_table_new'),
+                                                    #actionButton("plot1_dl", "Save list", icon("fa fa-floppy-o"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150)
+                                                    uiOutput("savelist_new_btn"),
+                                                    shinysky::shinyalert("alert_fbmlist_new", FALSE, auto.close.after = 4),
+                                                    #shinyBS::bsAlert("alert_fbmlist_new"),
+                                                    br()
+                                                  )#,
+                                                ),#fin div
+                                                br(),
+                                                br(),
                                                 br()
                                               ),
                                               
-                                              div( #begin div
-                                                id = "form2",
-                                              box(
-                                                #width = 8, status = "primary", height = "600px",
-                                                title = "Material Selected", width = 8, status = "primary", solidHeader = TRUE, collapsible = TRUE,
-                                                uiOutput("family_new_list"),
-                                                
-                                                #DT::dataTableOutput('fbmlist_choosen_table_new'),
-                                                #actionButton("plot1_dl", "Save list", icon("fa fa-floppy-o"), style="color: #fff; background-color: #51a351; border-color: #51a351", width = 150)
-                                                uiOutput("savelist_new_btn"),
-                                                shinysky::shinyalert("alert_fbmlist_new", FALSE, auto.close.after = 4),
-                                                #shinyBS::bsAlert("alert_fbmlist_new"),
-                                                br()
-                                              )#,
-                                              ),#fin div
-                                              br(),
-                                              br(),
-                                              br()
-                                            ),
-                                            
-                                            br()#,
-                                            
-                          )#,
-                     ),#end div
+                                              br()#,
+                                              
+                            )#,
+                          ),#end div
                           br(),
                           br(),
                           br()
