@@ -35,8 +35,6 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                                                          )
                                                          
                                                          )#,
-                                                     
-                                          
                                        ),
 
                                 column(6, selectizeInput("fbmlist_sel_type", "Select database", width="100%", selected = 2,
@@ -63,7 +61,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
 
                 conditionalPanel( condition = "output.show_mtable",  ##conditional Panel
 
-                            fluidRow(
+                            fluidRow( #begin fluidRow
                               box(
                                 #"Ingrese una lista de familias o clones", width = 4, status = "primary", height = "730px",
                                 title = "Paste a list of clones", width = 4, status = "primary", solidHeader = TRUE, collapsible = TRUE,
@@ -98,7 +96,7 @@ generate_ui <- function(type = "tab", title = "Clone List", name = "generateList
                               br(),
                               br(),
                               br()
-                            ),
+                            ), #end fluidRow
                             br(),
                             br()
                           ),##fin conditional Panel

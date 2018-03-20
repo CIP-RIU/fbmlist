@@ -52,7 +52,7 @@ server_createlist <- function(input,output,session, values){
 
       lapply(1:length(family_list_choosen), function(i) {
         print(i)
-        numericInput(paste0("n_input_wpb_", family_list_choosen[i]), label = paste0("", family_list_choosen[i]), value = 1)
+        numericInput(paste0("n_input_wpb_", family_list_choosen[i]), label = paste0("", family_list_choosen[i]), value = 100)
       })  
     }
   })
@@ -148,7 +148,7 @@ server_createlist <- function(input,output,session, values){
         
         if(n_search>0){ #for accession number, flag =1
           out <- paste(out_dbacc_search, collapse = ", ")
-          out <- paste("N= ", n_search, " accesion(s) were not found: ", out, sep="")
+          out <- paste("N= ", n_search, " accession(s) were not found: ", out, sep="")
         } else {
           out <- paste("", sep = "")
         }
@@ -507,9 +507,9 @@ server_createlist <- function(input,output,session, values){
     crop <- input$fbmlist_sel_crop_new
     
     #if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","fam",fbmlist_name_dbf,sep = "_")}
-    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","clone", fbmlist_name_dbf, sep = "_")} #clone list based on Family List 
+    if(crop=="potato")      {fbmlist_name_dbf <- paste("PT","clon", fbmlist_name_dbf, sep = "_")} #clone list based on Family List 
     #if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","fam",fbmlist_name_dbf,sep = "_")} 
-    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","clone", fbmlist_name_dbf, sep = "_")} #clone list based on Family List
+    if(crop=="sweetpotato") {fbmlist_name_dbf <- paste("SP","clon", fbmlist_name_dbf, sep = "_")} #clone list based on Family List
     
     fbmlist_name_dbf <- fbmlist_name_dbf
      

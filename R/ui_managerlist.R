@@ -11,6 +11,9 @@ managerlist_ui <- function(type = "tab", title = "Manage List", name = "manageLi
   
   shinydashboard::tabItem(tabName = name,
                           h2(title),   
+                          shinyjs::useShinyjs(),
+                          shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"),
+                          
                           
                           box(
                             title = " ", status = "primary", solidHeader = TRUE,
@@ -25,8 +28,10 @@ managerlist_ui <- function(type = "tab", title = "Manage List", name = "manageLi
                                                      
                                                      br(),
                                                      #HTML('<div style="float: right; margin: 0 5px 5px 10px;">'),
-                                                     shiny::actionButton("fbmlist_syncronize", "Syncronize Material Lists", icon("refresh"), 
+                                                     shiny::actionButton("fbmlist_syncronize", "Synchronize Material Lists", icon("refresh"), 
                                                                      style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                                                     shinysky::shinyalert("alert_fbmlist_syncronize", FALSE, auto.close.after = 300),
+                                                     
                                                      
                                                      br(),
                                                      br()

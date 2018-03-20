@@ -5,7 +5,8 @@
 #' @param type type of UI element, deault is a tab in a shinydashboard
 #' @param title diaply title name
 #' @param name UI TabName
-#' @importFrom shiny h2 fluidRow box column uiOutput icon tags conditionalPanel
+#' @importFrom shiny h2 fluidRow column uiOutput icon tags conditionalPanel
+#' @importFrom shinydashboard box
 #' @export
 #' 
 
@@ -18,7 +19,7 @@ createlist_ui <- function(type = "tab", title = "Family List", name = "createLis
                           shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"),
                           
                           fluidRow(
-                            box(
+                            shinydashboard::box(
                               title = " ", width = 12, status = "primary", height = "250px",
                               #p("Seleccione un cultivo y una base de datos"),
                                fluidRow(

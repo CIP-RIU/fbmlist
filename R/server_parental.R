@@ -393,7 +393,7 @@ server_parentlist <- function(input,output,session, values){
     mtl_table <- mtl_table[,1:6]
     temp_mtl_table <- mtl_table
     
-    if(input$fbmlist_txtarea_parent_fem!=""|| !str_detect(input$fbmlist_txtarea_parent_fem, "[[:space:]]") ){
+    if(input$fbmlist_txtarea_parent_fem!="" || !str_detect(input$fbmlist_txtarea_parent_fem, "[[:space:]]") ){
       
       #trimming search filter
       search_filter <- str_split(input$fbmlist_txtarea_parent_fem,"\\n")[[1]]
@@ -416,7 +416,7 @@ server_parentlist <- function(input,output,session, values){
       
       if(n_search>0){ #for accession number, flag =1
         out <- paste(out_dbacc_search, collapse = ", ")
-        out <- paste("N= ", n_search, " accesion(s) were not found: ", out, sep="")
+        out <- paste("N= ", n_search, " accession(s) were not found: ", out, sep="")
       } else {
         out <- paste("", sep = "")
       }
@@ -708,7 +708,7 @@ server_parentlist <- function(input,output,session, values){
       
       if(n_search>0){ #for accession number, flag =1
         out <- paste(out_dbacc_search, collapse = ", ")
-        out <- paste("N= ", n_search, " accesion(s) were not found: ", out, sep="")
+        out <- paste("N= ", n_search, " accession(s) were not found: ", out, sep="")
       } else {
         out <- paste("", sep = "")
       }

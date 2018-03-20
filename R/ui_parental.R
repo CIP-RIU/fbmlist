@@ -71,6 +71,9 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                                 
                                                 #tags$textarea(id="fbmlist_txtarea_parent", rows=30, cols=31, "")#,
                                                 
+                                                shiny::radioButtons("fbmlist_sex_parent",label = "Sex of the parent", choices = c("Female", "Male"), selected = "Female", inline = TRUE),
+                                                
+                                                
                                                 conditionalPanel( condition = "input.fbmlist_sex_parent=='Female'",
                                                 
                                                   tags$textarea(id="fbmlist_txtarea_parent_fem", rows=30, cols=31, "")#,
@@ -81,10 +84,24 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                                 ),
                                                 
                                                 
-                                                shiny::wellPanel(
-                                                  shiny::HTML("<b>Observations </b>"),
-                                                  shiny::textOutput("fbmlist_foundclones_parent")
+                                                conditionalPanel( condition = "input.fbmlist_sex_parent=='Female'",
+                                                
+                                                    shiny::wellPanel(
+                                                      shiny::HTML("<b>Observations </b>"),
+                                                      #shiny::textOutput("fbmlist_foundclones_parent")
+                                                      shiny::textOutput("fbmlist_foundclones_parent_fem")
+                                                    )
+                                                ) ,
+                                                
+                                                conditionalPanel( condition = "input.fbmlist_sex_parent=='Male'",
+                                                      shiny::wellPanel(
+                                                       shiny::HTML("<b>Observations </b>"),
+                                                         #shiny::textOutput("fbmlist_foundclones_parent")
+                                                          shiny::textOutput("fbmlist_foundclones_parent_male")
+                                                     )               
                                                 ),
+                                                
+                                                
                                                 
                                                 br(),
                                                 br(),
@@ -111,7 +128,7 @@ parent_ui <- function(type = "tab", title = "Parental List", name = "parentList"
                                                 br(),
                                                 
                                                 actionButton("fbmlist_select_parent", "Select marked", icon("fa-a farrow-down"), style="color: #fff; background-color: #51a351; border-color: #51a351"),
-                                                shiny::radioButtons("fbmlist_sex_parent",label = "Sex of the parent", choices = c("Female", "Male"), selected = "Female", inline = TRUE),
+                                                #shiny::radioButtons("fbmlist_sex_parent",label = "Sex of the parent", choices = c("Female", "Male"), selected = "Female", inline = TRUE),
                                                 
                                                 br(),
                                                 br(),
